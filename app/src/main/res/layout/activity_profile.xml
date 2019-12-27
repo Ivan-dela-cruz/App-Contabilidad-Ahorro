@@ -118,19 +118,21 @@
                         android:text="Show all comments"
                         android:textStyle="bold" />
                 </LinearLayout>
+                <Button
+                    android:id="@+id/btn_cerrar_sesion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/buttonstyle"
+                    android:text="Cerrar Sesión"
+                    android:textColor="#fff" />
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/buttonstyle"
-        android:text="Cerrar Sesión"
-        android:textColor="#fff" />
+
 
 </LinearLayout>
