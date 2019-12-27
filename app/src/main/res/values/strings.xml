@@ -1,0 +1,57 @@
+<resources>
+
+    <string name="facebook_app_id">2493539804222318</string>
+    <string name="fb_login_protocol_scheme">fb2493539804222318</string>
+
+
+    <string name="app_name">FinanAhorro</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Inicio</string>
+    <string name="menu_gallery">Gráficos</string>
+    <string name="menu_slideshow">Presupuesto</string>
+    <string name="menu_tools">Configuraciones</string>
+    <string name="menu_share">Temas</string>
+    <string name="menu_send">Acerca de</string>
+    <string name="menu_ahorro">Ahorros</string>
+
+    <string name="title_activity_acerca_manual">AcercaManualActivity</string>
+
+
+    <string name="tab_text_1">Amarillo</string>
+    <string name="tab_text_2">Azul</string>
+    <string name="tab_text_3">Rojo</string>
+    <string name="tab_text_4">Verde</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string-array name="porcentajes">
+        <item>5 %</item>
+        <item>10 %</item>
+        <item>15 %</item>
+        <item>20 %</item>
+        <item>25 %</item>
+        <item>30 %</item>
+        <item>35 %</item>
+        <item>40 %</item>
+        <item>45 %</item>
+        <item>50 %</item>
+        <item>55 %</item>
+        <item>60 %</item>
+        <item>65 %</item>
+        <item>70 %</item>
+        <item>75 %</item>
+        <item>80 %</item>
+        <item>85 %</item>
+        <item>90 %</item>
+        <item>95 %</item>
+        <item>100 %</item>
+    </string-array>
+</resources>

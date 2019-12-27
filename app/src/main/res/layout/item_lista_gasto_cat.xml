@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+
+    <ImageView
+        android:id="@+id/img_item_lista_gastos_tools"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:gravity="center_horizontal"
+        android:padding="1dp"
+        android:src="@drawable/car" />
+
+    <TextView
+        android:id="@+id/txt_nombre_item_lista_cat"
+        android:layout_width="251dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="0dp"
+        android:layout_toStartOf="@+id/btn_delete_item_lista_cat"
+        android:layout_toEndOf="@+id/img_item_lista_gastos_tools"
+        android:gravity="start|center"
+        android:paddingLeft="20dp"
+        android:text="Nombre"
+        android:textSize="14dp" />
+
+    <Button
+        android:id="@+id/btn_delete_item_lista_cat"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:background="@color/md_deep_orange_200"
+        android:text="Accion"
+        android:textColor="@color/colorBlanco" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/txt_nombre_item_lista_cat"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorBlancoTrasparente" />
+
+
+</RelativeLayout>

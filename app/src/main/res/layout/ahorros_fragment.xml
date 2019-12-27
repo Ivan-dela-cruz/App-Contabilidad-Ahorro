@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.ahorros.AhorrosFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Hello" />
+
+    <Button
+        android:visibility="gone"
+        android:id="@+id/btn_aniadir_categoria_ahorro"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:clickable="true"
+        android:text="Añadir" />
+
+
+
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/grupoFlotante"
+        android:foregroundGravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="16dp"
+        app:fab_addButtonColorNormal="@color/colorAccent"
+        app:fab_addButtonColorPressed="@color/colorAccent"
+        app:fab_expandDirection="up"
+        android:layout_marginRight="16dp"
+        android:layout_marginEnd="16dp">
+
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/flt_aniadir_ahorro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/md_blue_500"
+            app:fab_icon="@drawable/ic_add_black_24dp"
+            app:fab_size="mini" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:id="@+id/flt_refrescar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorNormal="@color/md_blue_500"
+            app:fab_icon="@drawable/ic_autorenew_black_24dp"
+            app:fab_size="mini" />
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+
+
+</RelativeLayout>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/img_item_lista_gallery_gastos"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:gravity="center_horizontal"
+        android:padding="1dp"
+        android:src="@drawable/car" />
+
+    <TextView
+        android:id="@+id/txt_nombre_item_gallery_gastos"
+        android:layout_width="222dp"
+        android:layout_height="18dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="9dp"
+        android:layout_toStartOf="@+id/txt_valor_item_gallery_gastos"
+        android:layout_toEndOf="@+id/img_item_lista_gallery_gastos"
+        android:gravity="start|center"
+        android:paddingLeft="10dp"
+        android:text="Nombre"
+        android:textSize="11dp" />
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/txt_valor_item_gallery_gastos"
+        android:layout_width="85dp"
+        android:layout_height="18dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="10dp"
+        android:layout_toStartOf="@+id/txt_porcentaje_item_gallery_gastos"
+        android:text="Accion"
+        android:textSize="11dp" />
+    <TextView
+        android:gravity="center"
+        android:id="@+id/txt_porcentaje_item_gallery_gastos"
+        android:layout_width="60dp"
+        android:layout_height="18dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:text="Accion"
+        android:textSize="11dp" />
+
+    <ProgressBar
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="0dp"
+        android:id="@+id/progres_gastos"
+        android:layout_below="@id/txt_nombre_item_gallery_gastos"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:max="100"
+        android:progressBackgroundTint="@color/md_blue_300"
+        android:progressTint="@color/colorAccent"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/progres_gastos"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorBlancoTrasparente" />
+
+</RelativeLayout>

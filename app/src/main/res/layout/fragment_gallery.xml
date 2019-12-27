@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardfecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="165dp"
+                android:layout_height="40dp"
+                android:layout_gravity="end"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/mes_selected"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:background="@color/md_grey_100"
+                    android:gravity="center"
+                    android:text="Septiembre"
+                    android:textStyle="bold" />
+
+                <ImageButton
+                    android:id="@+id/hide_calendar"
+                    style="@style/SelectedCalendar"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/md_grey_200"
+                    android:src="@drawable/ic_arriba_less_black_24dp"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/show_calendar"
+                    style="@style/SelectedCalendar"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/md_grey_200"
+                    android:src="@drawable/ic_abajo_more_black_24dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/secion_meses"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="bottom"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                android:id="@+id/btn_menos_anio"
+                                android:layout_width="100dp"
+                                android:layout_height="40dp"
+                                android:background="@color/colorBlanco"
+                                android:src="@drawable/ic_left_black_24dp" />
+
+                            <TextView
+                                android:id="@+id/txt_anio"
+                                android:layout_width="160dp"
+                                android:layout_height="40dp"
+                                android:gravity="center"
+                                android:text="2019"
+                                android:textSize="18dp"
+                                android:textStyle="bold" />
+
+                            <ImageButton
+                                android:id="@+id/btn_mas_anio"
+                                android:layout_width="100dp"
+                                android:layout_height="40dp"
+                                android:background="@color/colorBlanco"
+                                android:src="@drawable/ic_right_black_24dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+
+                            <GridLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_row="0"
+                                android:layout_column="0"
+                                android:layout_margin="2dp"
+                                android:columnCount="4"
+                                android:rowCount="4">
+
+                                <Button
+                                    android:id="@+id/btn_enero"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="0"
+                                    android:layout_column="0"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Ene." />
+
+                                <Button
+
+                                    android:id="@+id/btn_febrero"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="0"
+                                    android:layout_column="1"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Feb." />
+
+                                <Button
+
+                                    android:id="@+id/btn_marzo"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="0"
+                                    android:layout_column="2"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Mar." />
+
+                                <Button
+
+                                    android:id="@+id/btn_abril"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="0"
+                                    android:layout_column="3"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Abri." />
+
+
+                                <Button
+                                    android:id="@+id/btn_mayo"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="1"
+                                    android:layout_column="0"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="May." />
+
+                                <Button
+                                    android:id="@+id/btn_junio"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="1"
+                                    android:layout_column="1"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Jun." />
+
+                                <Button
+                                    android:id="@+id/btn_julio"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="1"
+                                    android:layout_column="2"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Jul." />
+
+                                <Button
+                                    android:id="@+id/btn_agosto"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="1"
+                                    android:layout_column="3"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Ago." />
+
+
+                                <Button
+                                    android:id="@+id/btn_septiembre"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="2"
+                                    android:layout_column="0"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Sep." />
+
+                                <Button
+                                    android:id="@+id/btn_octubre"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="2"
+                                    android:layout_column="1"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Oct." />
+
+                                <Button
+                                    android:id="@+id/btn_noviembre"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="2"
+                                    android:layout_column="2"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Nov." />
+
+                                <Button
+                                    android:id="@+id/btn_diciembre"
+                                    style="@style/CalendarButtons"
+                                    android:layout_row="2"
+                                    android:layout_column="3"
+                                    android:layout_marginTop="2dp"
+                                    android:layout_marginRight="2dp"
+                                    android:adjustViewBounds="true"
+                                    android:clickable="true"
+                                    android:text="Dic." />
+                            </GridLayout>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="1dp"
+                                android:background="@color/md_grey_300" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cajaaa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/cardfecha"
+        android:layout_marginTop="2dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/contrafecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.cardview.widget.CardView
+
+                android:id="@+id/cardView2"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_margin="8dp"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="8dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/grafico_pastel_gastos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+
+                </com.github.mikephil.charting.charts.PieChart>
+
+
+                <Button
+                    android:textAllCaps="false"
+                    android:background="@drawable/buttonredondo"
+                    android:textSize="12dp"
+                    android:id="@+id/textView2"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginTop="65dp"
+                    android:clickable="true"
+                    android:text="Gastos" />
+
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView3"
+                android:layout_width="match_parent"
+                android:layout_height="220dp"
+                android:layout_margin="8dp"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints"
+                tools:layout_editor_absoluteX="8dp">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/grafico_pastel_ingresos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </com.github.mikephil.charting.charts.PieChart>
+
+                <Button
+                    android:textAllCaps="false"
+                    android:background="@drawable/buttonredondo"
+                    android:textSize="12dp"
+                    android:id="@+id/textView3_ingresos"
+                    android:layout_width="90dp"
+                    android:layout_height="90dp"
+                    android:layout_marginLeft="140dp"
+                    android:layout_marginTop="65dp"
+                    android:clickable="true"
+                    android:text="Ingresos"
+                    android:visibility="gone"/>
+
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_marginTop="2dp"
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/cajaaa">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_gasto_gallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    app:cardCornerRadius="5dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:background="@color/md_blue_100"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/ic_search_black_24dp"/>
+                        <TextView
+                            android:id="@+id/text_home_titulo_gastos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="Resumen mensual de gastos "
+                            android:textAlignment="center"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_gallery_gastos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="42dp"
+                        android:layout_marginBottom="1dp" />
+
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardview_ingreso_gallery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:visibility="gone"
+                    app:cardCornerRadius="5dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:background="@color/md_blue_100"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:src="@drawable/ic_search_black_24dp"/>
+
+                        <TextView
+                            android:id="@+id/text_home_titulo_ingresos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:gravity="center"
+                            android:text="Resumen mensual de ingresos "
+                            android:textAlignment="center"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
+
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/recycler_gallery_ingresos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="42dp"
+                        android:layout_marginBottom="1dp" />
+
+                </androidx.cardview.widget.CardView>
+
+
+            </RelativeLayout>
+
+
+    </ScrollView>
+
+</RelativeLayout>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+
+    <ImageView
+        android:id="@+id/img_detail_lista_gastos_home"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="4dp"
+        android:gravity="center_horizontal"
+        android:padding="1dp"
+        android:src="@drawable/car" />
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:id="@+id/txt_nombre_detail_home_gasto"
+        android:layout_width="222dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toStartOf="@+id/txt_valor_detail_home_gasto"
+        android:layout_toEndOf="@+id/img_detail_lista_gastos_home"
+        android:gravity="start|center"
+        android:paddingLeft="10dp"
+        android:text="Nombre"
+        android:textSize="14dp" />
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:id="@+id/txt_valor_detail_home_gasto"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="5dp"
+        android:layout_toStartOf="@+id/txt_fecha_detail_home_gasto"
+        android:text="Accion" />
+
+    <TextView
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:id="@+id/txt_fecha_detail_home_gasto"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="10dp"
+        android:text="fecha" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/txt_nombre_detail_home_gasto"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorBlancoTrasparente" />
+</RelativeLayout>
