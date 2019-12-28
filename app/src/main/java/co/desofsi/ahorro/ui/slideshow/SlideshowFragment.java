@@ -611,8 +611,7 @@ public class SlideshowFragment extends Fragment {
 
 
         //obteer datos de la base de datos
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT categoria_gasto.id,categoria_gasto.nombre,categoria_gasto.imagen,categoria_gasto.presupuesto,categoria_gasto.estado, SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  (gastos.id_cat = categoria_gasto.id) AND (categoria_gasto.estado = 1)  WHERE SUBSTR(gastos.fecha, 4, 2) = '12' group by categoria_gasto.nombre  ORDER BY  total DESC");
-
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '"+MainActivity.id_user+"'");
         lista_categoria_gastos.clear();
         int contador = 0;
         while (cursor.moveToNext()) {
@@ -621,7 +620,11 @@ public class SlideshowFragment extends Fragment {
             byte[] image = cursor.getBlob(2);
             double pre = cursor.getDouble(3);
             int estado = cursor.getInt(4);
-            double total = cursor.getDouble(5);
+            double total = 0;
+            Cursor mensual = MainActivity.sqLiteHelper.getDataTable("SELECT  SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  (gastos.id_cat = categoria_gasto.id) AND (categoria_gasto.estado = 1) AND categoria_gasto.id = '"+id+"'  AND categoria_gasto.id_user = '"+MainActivity.id_user+"' AND SUBSTR(gastos.fecha, 4, 2) = '12' ");
+            if(mensual.moveToFirst()){
+                total = mensual.getDouble(0);
+            }
             if(total>pre){
                 contador++;
             }

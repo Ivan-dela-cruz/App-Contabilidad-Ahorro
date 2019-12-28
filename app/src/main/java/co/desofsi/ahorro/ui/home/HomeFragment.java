@@ -228,7 +228,8 @@ public class HomeFragment extends Fragment implements
                 lista_gastos_recicler.get(position).getFecha(),
                 lista_gastos_recicler.get(position).getImagen(),
                 lista_gastos_recicler.get(position).getValor(),
-                lista_gastos_recicler.get(position).getId_cat()
+                lista_gastos_recicler.get(position).getId_cat(),
+                MainActivity.id_user
 
         );
         intent.putExtra("Gasto", cate);
@@ -248,7 +249,8 @@ public class HomeFragment extends Fragment implements
                 lista_ingresos.get(position).getFecha(),
                 lista_ingresos.get(position).getImagen(),
                 lista_ingresos.get(position).getValor(),
-                lista_ingresos.get(position).getId_cat()
+                lista_ingresos.get(position).getId_cat(),
+                MainActivity.id_user
 
         );
         intent.putExtra("Ingreso", cate);
@@ -614,7 +616,7 @@ public class HomeFragment extends Fragment implements
         recyclerView.clearAnimation();
         lista_gastos_recicler = new ArrayList<>();
         //obteer datos de la base de datos
-        String sql2 = "SELECT categoria_gasto.id,categoria_gasto.nombre,gastos.fecha,categoria_gasto.imagen, SUM(gastos.valor) AS total,categoria_gasto.id FROM categoria_gasto LEFT JOIN gastos ON  gastos.id_cat = categoria_gasto.id  AND SUBSTR(gastos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(gastos.fecha, 4, 2) = '" + mes_re + "' group by categoria_gasto.nombre";
+        String sql2 = "SELECT categoria_gasto.id,categoria_gasto.nombre,gastos.fecha,categoria_gasto.imagen, SUM(gastos.valor) AS total,categoria_gasto.id FROM categoria_gasto LEFT JOIN gastos ON  gastos.id_cat = categoria_gasto.id  AND gastos.id_user = '"+MainActivity.id_user+"'   AND SUBSTR(gastos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(gastos.fecha, 4, 2) = '" + mes_re + "' group by categoria_gasto.nombre";
 
         Cursor cursor = MainActivity.sqLiteHelper.getDataTable(sql2);
 
@@ -629,7 +631,7 @@ public class HomeFragment extends Fragment implements
             double valor = cursor.getDouble(4);
             total_gastos += valor;
             int id_cat = cursor.getInt(5);
-            lista_gastos_recicler.add(new Gasto(id, desripcion, fecha, image, valor, id_cat));
+            lista_gastos_recicler.add(new Gasto(id, desripcion, fecha, image, valor, id_cat,MainActivity.id_user));
 
         }
         RecyclerHomeItemGastosAdapter adapterTools = new RecyclerHomeItemGastosAdapter(lista_gastos_recicler, this);
@@ -648,7 +650,7 @@ public class HomeFragment extends Fragment implements
 
         lista_ingresos = new ArrayList<>();
 
-        String sql = "SELECT categoria_ingreso.id,categoria_ingreso.nombre,ingresos.fecha,categoria_ingreso.imagen, SUM(ingresos.valor) AS total,categoria_ingreso.id FROM categoria_ingreso LEFT JOIN ingresos ON  ingresos.id_cat = categoria_ingreso.id  AND SUBSTR(ingresos.fecha, 7, 4) = '" + anio + "'  WHERE SUBSTR(ingresos.fecha, 4, 2) = '" + mes_re + "' group by categoria_ingreso.nombre";
+        String sql = "SELECT categoria_ingreso.id,categoria_ingreso.nombre,ingresos.fecha,categoria_ingreso.imagen, SUM(ingresos.valor) AS total,categoria_ingreso.id FROM categoria_ingreso LEFT JOIN ingresos ON  ingresos.id_cat = categoria_ingreso.id  AND ingresos.id_user = '"+MainActivity.id_user+"'  AND SUBSTR(ingresos.fecha, 7, 4) = '" + anio + "'  WHERE SUBSTR(ingresos.fecha, 4, 2) = '" + mes_re + "' group by categoria_ingreso.nombre";
         //obteer datos de la base de datos
         Cursor cursor_ingresos = MainActivity.sqLiteHelper.getDataTable(sql);
 
@@ -662,7 +664,7 @@ public class HomeFragment extends Fragment implements
             double valor_in = cursor_ingresos.getDouble(4);
             total_ingreso += valor_in;
             int id_cat_in = cursor_ingresos.getInt(5);
-            lista_ingresos.add(new Ingresos(id_in, desripcion_in, fecha_in, image_in, valor_in, id_cat_in));
+            lista_ingresos.add(new Ingresos(id_in, desripcion_in, fecha_in, image_in, valor_in, id_cat_in,MainActivity.id_user));
 
         }
         RecyclerHomeItemIngresosAdapter adapterHomeIngresos = new RecyclerHomeItemIngresosAdapter(lista_ingresos, this);

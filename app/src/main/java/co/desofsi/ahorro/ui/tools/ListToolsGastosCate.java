@@ -49,7 +49,7 @@ public class ListToolsGastosCate extends AppCompatActivity implements RecyclerTo
 
 
         //obteer datos de la base de datos
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto");
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '"+MainActivity.id_user+"'");
 
         arrayList.clear();
         while (cursor.moveToNext()) {
@@ -58,7 +58,7 @@ public class ListToolsGastosCate extends AppCompatActivity implements RecyclerTo
             byte[] image = cursor.getBlob(2);
             double pre = cursor.getDouble(3);
             int estado = cursor.getInt(4);
-            arrayList.add(new CategoriaGasto(id, nombre, image, pre, estado));
+            arrayList.add(new CategoriaGasto(id, nombre, image, pre, estado,MainActivity.id_user));
 
         }
         RecyclerToolsListaGastosAdapter adapterTools = new RecyclerToolsListaGastosAdapter(arrayList , this);
@@ -89,7 +89,8 @@ public class ListToolsGastosCate extends AppCompatActivity implements RecyclerTo
                 arrayList.get(position).getNombre(),
                 arrayList.get(position).getImage(),
                 arrayList.get(position).getPresupuesto(),
-                arrayList.get(position).getEstado()
+                arrayList.get(position).getEstado(),
+                MainActivity.id_user
 
         );
         intent.putExtra("CategoriaGasto", cate);

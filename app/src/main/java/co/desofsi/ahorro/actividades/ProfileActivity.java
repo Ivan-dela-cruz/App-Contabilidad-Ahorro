@@ -3,10 +3,13 @@ package co.desofsi.ahorro.actividades;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -56,11 +59,9 @@ public class ProfileActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         // String id = (String) getIntent().getExtras().getSerializable("id_user");
-         id = MainActivity.id_user;
+        id = MainActivity.id_user;
 
-         loadProfileUser();
-
-        Glide.with(this).load(String.valueOf(MainActivity.url_image_user)).into(image_user);
+        loadProfileUser();
 
 
         logaout.setOnClickListener(new View.OnClickListener() {
@@ -71,15 +72,16 @@ public class ProfileActivity extends AppCompatActivity {
                 switch (v.getId()) {
                     // ...
                     case R.id.btn_cerrar_sesion:
-                        switch (MainActivity.btn_press){
+                        switch (MainActivity.btn_press) {
                             case 0:
                                 disconnectFromFacebook();
+                                MainActivity.id_user = "";
                                 startActivity(intent);
                                 break;
 
                             case 1:
                                 signOut();
-
+                                MainActivity.id_user = "";
                                 startActivity(intent);
                                 break;
                         }
@@ -93,10 +95,13 @@ public class ProfileActivity extends AppCompatActivity {
 
     }
 
-    public void loadProfileUser(){
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id = '"+id+"'");
+    public void loadProfileUser() {
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id = '" + id + "'");
 
-        if (cursor.moveToFirst()){
+        ConnectivityManager connectivityManager = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (cursor.moveToFirst()) {
 
             byte[] image = cursor.getBlob(6);
             usuario = new Usuario(
@@ -108,16 +113,24 @@ public class ProfileActivity extends AppCompatActivity {
                     cursor.getString(5),
                     image);
 
-            text_nombres .setText(usuario.getNombre()+" "+usuario.getApellido());
+            text_nombres.setText(usuario.getNombre() + " " + usuario.getApellido());
             email.setText(usuario.getEmail());
             genero.setText(usuario.getGenero());
             fecha_n.setText(usuario.getFecha_n());
 
             byte[] img_user = usuario.getImagen();
-             bitmap = BitmapFactory.decodeByteArray(img_user, 0, img_user.length);
-           // image_user.setImageBitmap(bitmap);
+            bitmap = BitmapFactory.decodeByteArray(img_user, 0, img_user.length);
+
+
+            if (networkInfo != null) {
+                Glide.with(this).load(String.valueOf(MainActivity.url_image_user)).into(image_user);
+            } else {
+                image_user.setImageBitmap(bitmap);
+            }
 
         }
+
+
     }
 
 

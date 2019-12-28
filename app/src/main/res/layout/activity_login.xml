@@ -35,12 +35,13 @@
             android:visibility="gone" />
 
         <Button
+            android:textAllCaps="false"
             android:id="@+id/fb"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#416BC1"
             android:onClick="onClick"
-            android:text="FaceBook Login"
+            android:text="Inciar con Facebook"
             android:textColor="#ffffff"
             android:textStyle="bold" />
     </FrameLayout>
@@ -52,6 +53,10 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp">
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_search_black_24dp"/>
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_in_button"
@@ -61,14 +66,16 @@
             />
 
         <Button
+            android:textAllCaps="false"
             android:id="@+id/google"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:background="#cf4333"
             android:onClick="onClick"
-            android:text="Google Login"
+            android:text="Iniciar con Google"
             android:textColor="#ffffff"
             android:textStyle="bold" />
+
     </FrameLayout>
 
 

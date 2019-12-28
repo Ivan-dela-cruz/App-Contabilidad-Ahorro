@@ -90,7 +90,7 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
 
 
         //obteer datos de la base de datos
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_ingreso");
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_ingreso WHERE id_user = '"+MainActivity.id_user+"'");
 
         arrayList.clear();
         while (cursor.moveToNext()) {
@@ -98,7 +98,7 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
             String nombre = cursor.getString(1);
             byte[] image = cursor.getBlob(2);
             int estado = cursor.getInt(3);
-            arrayList.add(new CategoriaIngreso(id, nombre, image,estado));
+            arrayList.add(new CategoriaIngreso(id, nombre, image,estado,MainActivity.id_user));
 
         }
 
@@ -145,7 +145,7 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
                                     nombreCategoria,
                                     btn_fecha.getText().toString().trim(),
                                     imageViewToByte(img_ingreso),
-                                    new_valor,id_cate
+                                    new_valor,id_cate,MainActivity.id_user
 
                             );
                         } else {
@@ -153,7 +153,7 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
                                     text_descrip.getText().toString().trim(),
                                     btn_fecha.getText().toString().trim(),
                                     imageViewToByte(img_ingreso),
-                                    new_valor,id_cate
+                                    new_valor,id_cate,MainActivity.id_user
 
                             );
 

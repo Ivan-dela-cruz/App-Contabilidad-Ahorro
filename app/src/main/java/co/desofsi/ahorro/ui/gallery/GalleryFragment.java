@@ -234,7 +234,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
     public void llenarArrayGraficoGastos() {
         //vinculacion del list view
         lista_gastos = new ArrayList<>();
-        String sql2 = "SELECT categoria_gasto.id,categoria_gasto.nombre,gastos.fecha,categoria_gasto.imagen, SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  gastos.id_cat = categoria_gasto.id  AND SUBSTR(gastos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(gastos.fecha, 4, 2) = '" + mes_re + "' group by categoria_gasto.nombre  ORDER BY  total DESC LIMIT 0,5";
+        String sql2 = "SELECT categoria_gasto.id,categoria_gasto.nombre,gastos.fecha,categoria_gasto.imagen, SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  gastos.id_cat = categoria_gasto.id  AND gastos.id_user = '"+MainActivity.id_user+"'  AND SUBSTR(gastos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(gastos.fecha, 4, 2) = '" + mes_re + "' group by categoria_gasto.nombre  ORDER BY  total DESC LIMIT 0,5";
         //obteer datos de la base de datos
         Cursor cursor2 = MainActivity.sqLiteHelper.getDataTable(sql2);
         while (cursor2.moveToNext()) {
@@ -244,7 +244,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
             String fecha2 = cursor2.getString(2);
             byte[] image2 = cursor2.getBlob(3);
             double valor2 = cursor2.getDouble(4);
-            lista_gastos.add(new Gasto(id2, descripcion2, fecha2, image2, valor2, id2));
+            lista_gastos.add(new Gasto(id2, descripcion2, fecha2, image2, valor2, id2,MainActivity.id_user));
         }
         crearGraficoPastel(lista_gastos);
     }
@@ -252,7 +252,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
     public void llenarArrayGraficoIngresos() {
         //vinculacion del list view
         lista_ingresos = new ArrayList<>();
-        String sql2 = "SELECT categoria_ingreso.id,categoria_ingreso.nombre,ingresos.fecha,categoria_ingreso.imagen, SUM(ingresos.valor) AS total FROM categoria_ingreso LEFT JOIN ingresos ON  ingresos.id_cat = categoria_ingreso.id  AND SUBSTR(ingresos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(ingresos.fecha, 4, 2) = '" + mes_re + "' group by categoria_ingreso.nombre  ORDER BY  total DESC LIMIT 0,5";
+        String sql2 = "SELECT categoria_ingreso.id,categoria_ingreso.nombre,ingresos.fecha,categoria_ingreso.imagen, SUM(ingresos.valor) AS total FROM categoria_ingreso LEFT JOIN ingresos ON  ingresos.id_cat = categoria_ingreso.id  AND ingresos.id_user = '"+MainActivity.id_user+"'  AND SUBSTR(ingresos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(ingresos.fecha, 4, 2) = '" + mes_re + "' group by categoria_ingreso.nombre  ORDER BY  total DESC LIMIT 0,5";
         //obteer datos de la base de datos
         Cursor cursor2 = MainActivity.sqLiteHelper.getDataTable(sql2);
         while (cursor2.moveToNext()) {
@@ -261,7 +261,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
             String fecha2 = cursor2.getString(2);
             byte[] image2 = cursor2.getBlob(3);
             double valor2 = cursor2.getDouble(4);
-            lista_ingresos.add(new Ingresos(id2, descripcion2, fecha2, image2, valor2, id2));
+            lista_ingresos.add(new Ingresos(id2, descripcion2, fecha2, image2, valor2, id2,MainActivity.id_user));
         }
 
         crearGraficoPastelIngreso(lista_ingresos);
@@ -276,7 +276,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
         lista_gastosrecycler = new ArrayList<>();
         //obteer datos de la base de datos
 
-        String sql2 = "SELECT categoria_gasto.id,categoria_gasto.nombre,gastos.fecha,categoria_gasto.imagen, SUM(gastos.valor) AS total,categoria_gasto.id FROM categoria_gasto LEFT JOIN gastos ON  gastos.id_cat = categoria_gasto.id  AND SUBSTR(gastos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(gastos.fecha, 4, 2) = '" + mes_re + "' group by categoria_gasto.nombre ORDER BY total DESC";
+        String sql2 = "SELECT categoria_gasto.id,categoria_gasto.nombre,gastos.fecha,categoria_gasto.imagen, SUM(gastos.valor) AS total,categoria_gasto.id FROM categoria_gasto LEFT JOIN gastos ON  gastos.id_cat = categoria_gasto.id AND gastos.id_user = '"+MainActivity.id_user+"' AND SUBSTR(gastos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(gastos.fecha, 4, 2) = '" + mes_re + "' group by categoria_gasto.nombre ORDER BY total DESC";
 
         Cursor cursor = MainActivity.sqLiteHelper.getDataTable(sql2);
 
@@ -293,7 +293,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
             double valor = cursor.getDouble(4);
             int id_cat = cursor.getInt(5);
             total_porcentaje += valor;
-            lista_gastosrecycler.add(new Gasto(id, desripcion, fecha, image, valor, id_cat));
+            lista_gastosrecycler.add(new Gasto(id, desripcion, fecha, image, valor, id_cat,MainActivity.id_user));
 
 
         }
@@ -321,7 +321,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
 
         //obteer datos de la base de datos
 
-        String sql = "SELECT categoria_ingreso.id,categoria_ingreso.nombre,ingresos.fecha,categoria_ingreso.imagen, SUM(ingresos.valor) AS total,categoria_ingreso.id FROM categoria_ingreso LEFT JOIN ingresos ON  ingresos.id_cat = categoria_ingreso.id  AND SUBSTR(ingresos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(ingresos.fecha, 4, 2) = '" + mes_re + "' group by categoria_ingreso.nombre ORDER BY total DESC";
+        String sql = "SELECT categoria_ingreso.id,categoria_ingreso.nombre,ingresos.fecha,categoria_ingreso.imagen, SUM(ingresos.valor) AS total,categoria_ingreso.id FROM categoria_ingreso LEFT JOIN ingresos ON  ingresos.id_cat = categoria_ingreso.id AND ingresos.id_user = '"+MainActivity.id_user+"'  AND SUBSTR(ingresos.fecha, 7, 4) = '" + anio + "' WHERE SUBSTR(ingresos.fecha, 4, 2) = '" + mes_re + "' group by categoria_ingreso.nombre ORDER BY total DESC";
 
         Cursor cursor_ingresos = MainActivity.sqLiteHelper.getDataTable(sql);
 
@@ -335,7 +335,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
             byte[] image_in = cursor_ingresos.getBlob(3);
             double valor_in = cursor_ingresos.getDouble(4);
             int id_cat_in = cursor_ingresos.getInt(5);
-            list_ingresos_recycler.add(new Ingresos(id_in, desripcion_in, fecha_in, image_in, valor_in, id_cat_in));
+            list_ingresos_recycler.add(new Ingresos(id_in, desripcion_in, fecha_in, image_in, valor_in, id_cat_in,MainActivity.id_user));
             total_porcentaje_ingresos += valor_in;
 
         }

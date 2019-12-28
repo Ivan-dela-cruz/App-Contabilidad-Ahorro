@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -61,8 +64,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //botones perzonlizados
     public Button fb, google;
-
-
 
 
     @Override
@@ -143,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             if (currentAccessToken == null) {
                 circleImageView.setImageResource(0);
-               // Toast.makeText(LoginActivity.this, "User logged out", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(LoginActivity.this, "User logged out", Toast.LENGTH_SHORT).show();
             } else {
                 LoadUserProfile(currentAccessToken);
             }
@@ -171,9 +172,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     String id = object.getString("id");
 
                     String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
-
-
-
 
 
                 } catch (JSONException e) {
@@ -204,7 +202,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void goMainScreen() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 
-       // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         startActivity(intent);
     }
 
@@ -240,12 +238,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     //Change UI according to user data.
     public void updateUI(GoogleSignInAccount account) {
         if (account != null) {
-          //  Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this,MainActivity.class);
+            //  Toast.makeText(this, "U Signed In successfully", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, MainActivity.class);
 
             startActivity(intent);
         } else {
-          //  Toast.makeText(this, "No ha iniciado secion", Toast.LENGTH_LONG).show();
+            //  Toast.makeText(this, "No ha iniciado secion", Toast.LENGTH_LONG).show();
 
         }
     }
@@ -253,14 +251,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        if (v == fb) {
 
-            loginButton.performClick();
+        ConnectivityManager con = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = con.getActiveNetworkInfo();
 
-        } else if (v == google) {
+        if (networkInfo != null) {
+            if (v == fb) {
 
-            signIn();
+                loginButton.performClick();
+
+            } else if (v == google) {
+
+                signIn();
+            }
+        }else{
+            Toast.makeText(this, "Error de conexión internet", Toast.LENGTH_SHORT).show();
         }
+
+
     }
 
     @Override

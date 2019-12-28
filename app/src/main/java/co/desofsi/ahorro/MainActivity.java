@@ -1,6 +1,7 @@
 package co.desofsi.ahorro;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -8,6 +9,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -34,6 +37,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import co.desofsi.ahorro.actividades.LoginActivity;
 import co.desofsi.ahorro.actividades.ProfileActivity;
+import co.desofsi.ahorro.entidades.CategoriaGasto;
+import co.desofsi.ahorro.entidades.CategoriaIngreso;
 import co.desofsi.ahorro.entidades.Usuario;
 import co.desofsi.ahorro.sqlitehelpers.SQLiteHelper;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -116,13 +121,23 @@ public class MainActivity extends AppCompatActivity {
         if (AccessToken.getCurrentAccessToken() == null) {
             btn_press = 1;
             loadGoogleProfile();
+            insertCategories();
 
         } else {
             btn_press = 0;
             LoadUserProfile(AccessToken.getCurrentAccessToken());
+            insertCategories();
         }
 
 
+    }
+
+    private byte[] imageViewToByte(ImageView imageView) {
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
     }
 
 
@@ -153,60 +168,73 @@ public class MainActivity extends AppCompatActivity {
 
     private void LoadUserProfile(AccessToken newAccessToken) {
 
-        GraphRequest graphRequest = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
 
-                try {
-                    String first_name = object.getString("first_name");
-                    String last_name = object.getString("last_name");
-                    String email = object.getString("email");
-                    String birthday = object.getString("birthday");
-                    String id = object.getString("id");
+        ConnectivityManager con = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = con.getActiveNetworkInfo();
 
-                    String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
-                    url_image_user = image_url;
+        if (networkInfo != null) {
+            GraphRequest graphRequest = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
+                @Override
+                public void onCompleted(JSONObject object, GraphResponse response) {
+
+                    try {
+                        String first_name = object.getString("first_name");
+                        String last_name = object.getString("last_name");
+                        String email = object.getString("email");
+                        String birthday = object.getString("birthday");
+                        String id = object.getString("id");
+
+                        String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
+                        url_image_user = image_url;
 
 
-                    Glide.with(MainActivity.this).load(image_url).into(circleImageView);
-                    id_user = id;
+                        //  Glide.with(MainActivity.this).load(image_url).into(circleImageView);
+                        id_user = id;
 
 
-                    Bitmap bitmap = ((BitmapDrawable) img_default.getDrawable()).getBitmap();
+                        Bitmap bitmap = ((BitmapDrawable) img_default.getDrawable()).getBitmap();
 
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-                    byte[] byteArray = stream.toByteArray();
+                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                        byte[] byteArray = stream.toByteArray();
 
-                    Cursor cursor = sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id = '" + id + "'");
+                        Cursor cursor = sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id = '" + id + "'");
 
-                    if (cursor.moveToFirst()) {
-                        loadProfileUser();
-                        Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
-                    } else {
+                        if (cursor.moveToFirst()) {
+                            loadProfileUser();
+                           // Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
+                        } else {
 
-                        txt_email.setText(email);
-                        txt_name.setText(first_name + " " + last_name);
-                        RequestOptions requestOptions = new RequestOptions();
-                        requestOptions.dontAnimate();
+                            txt_email.setText(email);
+                            txt_name.setText(first_name + " " + last_name);
+                            RequestOptions requestOptions = new RequestOptions();
+                            requestOptions.dontAnimate();
 
-                        sqLiteHelper.insertDataUsuarios(id, first_name, last_name, email, birthday, "Otro", byteArray);
+                            sqLiteHelper.insertDataUsuarios(id, first_name, last_name, email, birthday, "Otro", byteArray);
+                            insertCategories();
 
-                        Toast.makeText(MainActivity.this, "Registrado", Toast.LENGTH_SHORT).show();
+                           Toast.makeText(MainActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
+                        }
+
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
-        });
+            });
 
-        Bundle parameters = new Bundle();
+            Bundle parameters = new Bundle();
 
-        parameters.putString("fields", "first_name,last_name,email,id,birthday");
-        graphRequest.setParameters(parameters);
-        graphRequest.executeAsync();
+            parameters.putString("fields", "first_name,last_name,email,id,birthday");
+            graphRequest.setParameters(parameters);
+            graphRequest.executeAsync();
+        } else {
+            id_user = AccessToken.getCurrentAccessToken().getUserId();
+            Toast.makeText(this,"Error de conexión internet",Toast.LENGTH_SHORT).show();
+            loadProfileUser();
+        }
+
+
     }
 
 
@@ -223,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 Uri personPhoto = acct.getPhotoUrl();
 
                 url_image_user = String.valueOf(personPhoto);
-                Glide.with(MainActivity.this).load(String.valueOf(personPhoto)).into(circleImageView);
+
                 id_user = personId;
 
 
@@ -237,7 +265,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (cursor.moveToFirst()) {
                     loadProfileUser();
-                    Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
+                   // Glide.with(MainActivity.this).load(url_image_user).into(circleImageView);
+                   // Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
                 } else {
 
 
@@ -248,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
 
                     sqLiteHelper.insertDataUsuarios(personId, personGivenName, personFamilyName, personEmail, "00/00/0000", "Otro", byteArray);
 
-                    Toast.makeText(MainActivity.this, "Registrado", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
                 }
             } catch (Exception e) {
 
@@ -280,10 +309,17 @@ public class MainActivity extends AppCompatActivity {
             txt_name.setText(usuario.getNombre() + " " + usuario.getApellido());
             txt_email.setText(usuario.getEmail());
 
+            ConnectivityManager con = (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = con.getActiveNetworkInfo();
 
-            byte[] img_user = usuario.getImagen();
-            Bitmap bitmap = BitmapFactory.decodeByteArray(img_user, 0, img_user.length);
-            // image_user.setImageBitmap(bitmap);
+            if (networkInfo != null) {
+                Glide.with(MainActivity.this).load(url_image_user).into(circleImageView);
+            } else {
+                byte[] img_user = usuario.getImagen();
+                Bitmap bitmap = BitmapFactory.decodeByteArray(img_user, 0, img_user.length);
+                circleImageView.setImageBitmap(bitmap);
+            }
+
 
         }
     }
@@ -297,7 +333,38 @@ public class MainActivity extends AppCompatActivity {
         txt_name = (TextView) headerView.findViewById(R.id.textView2);
         circleImageView = (CircleImageView) headerView.findViewById(R.id.img_user);
         img_default = (ImageView) headerView.findViewById(R.id.img_user_face);
+
+
+
     }
+
+    public void insertCategories(){
+
+        //consulta si hay catgorias agregadas sino existen agregara las categorias por defecto
+        Cursor cursor = sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '"+MainActivity.id_user+"'");
+        if (cursor.moveToFirst()){
+
+        }else {
+            CategoriaGasto cate = new CategoriaGasto();
+            cate.loadCategoryGasto(MainActivity.this);
+        }
+
+        //consulta si hay catgorias agregadas sino existen agregara las categorias por defecto
+        Cursor cursor2 = sqLiteHelper.getDataTable("SELECT * FROM categoria_ingreso WHERE id_user = '"+MainActivity.id_user+"'");
+        if (cursor2.moveToFirst()){
+
+        }else {
+            CategoriaIngreso cate = new CategoriaIngreso();
+            cate.loadCategoryIngreso(MainActivity.this);
+        }
+    }
+
+
+
+
+
+
+
 
 
 }

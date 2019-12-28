@@ -82,7 +82,7 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
                     try {
                         MainActivity.sqLiteHelper.insertDataCategoriaIngresos(
                                 txt_nom.getText().toString().trim(),
-                                imageViewToByte(img_elije), 1
+                                imageViewToByte(img_elije), 1,MainActivity.id_user
 
                         );
                         Toast.makeText(getApplicationContext(), "Agregado exitosamente!", Toast.LENGTH_SHORT).show();

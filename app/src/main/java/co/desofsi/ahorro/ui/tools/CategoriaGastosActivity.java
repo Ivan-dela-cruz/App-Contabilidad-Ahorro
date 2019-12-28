@@ -41,7 +41,7 @@ public class CategoriaGastosActivity extends AppCompatActivity {
     private ImageView camahospital, dentista, doctor, emfermera, frascopastilla, gotero, hospital, jeringa, lecion, maletin, pildora, tratamiento;
 
 
-    EditText txt_nom;
+    EditText txt_nom, txt_presupueto;
     Button btn_elije;
     ImageButton btn_grabar;
     ImageView img_elije;
@@ -86,15 +86,16 @@ public class CategoriaGastosActivity extends AppCompatActivity {
             public void onClick(View v) {
 
 
-                if (txt_nom.getText().toString().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Ingrese un nombre porfavor!", Toast.LENGTH_SHORT).show();
+                if (txt_nom.getText().toString().equals("")|| txt_presupueto.getText().toString().equals("")) {
+                    Toast.makeText(getApplicationContext(), "Complete los campos porfavor!", Toast.LENGTH_SHORT).show();
                 } else {
 
 
                     try {
+                        double presupuesto = Double.parseDouble(txt_presupueto.getText().toString());
                         MainActivity.sqLiteHelper.insertDataCategoriaGastos(
                                 txt_nom.getText().toString().trim(),
-                                imageViewToByte(img_elije),0,1
+                                imageViewToByte(img_elije),presupuesto,1,MainActivity.id_user
 
                         );
                         Toast.makeText(getApplicationContext(), "Agregado exitosamente!", Toast.LENGTH_SHORT).show();
@@ -913,6 +914,7 @@ public class CategoriaGastosActivity extends AppCompatActivity {
 
 
         txt_nom = (EditText) findViewById(R.id.txt_nombre_cat);
+        txt_presupueto = (EditText) findViewById(R.id.txt_presupuesto_tools);
         btn_elije = (Button) findViewById(R.id.btn_elije);
         btn_grabar = (ImageButton) findViewById(R.id.btn_salvar);
         img_elije = (ImageView) findViewById(R.id.img_categoria);

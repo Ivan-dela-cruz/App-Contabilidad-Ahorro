@@ -47,12 +47,28 @@ public class HomeGastosGridAdapter extends BaseAdapter {
         CategoriaGasto catIngreso = arrayList.get(position);
         TextView nombre = (TextView) convertView.findViewById(R.id.txt_cat_nombre);
         ImageView image = (ImageView) convertView.findViewById(R.id.img_cat_gasto);
+        ImageView indicador = (ImageView) convertView.findViewById(R.id.indicador_presupuesto);
 
         byte[] cat_img = catIngreso.getImage();
         Bitmap bitmap = BitmapFactory.decodeByteArray(cat_img, 0, cat_img.length);
 
         image.setImageBitmap(bitmap);
         nombre.setText(catIngreso.getNombre());
+
+
+        double ciencuenta = catIngreso.getPresupuesto()*0.5;
+        double setenta = catIngreso.getPresupuesto()*0.75;
+
+
+        if(catIngreso.getGasto_mensual()<=ciencuenta){
+            indicador.setImageResource(R.drawable.verde);
+        }
+        if (catIngreso.getGasto_mensual()>ciencuenta && catIngreso.getGasto_mensual()<=setenta){
+            indicador.setImageResource(R.drawable.amarillo);
+        }
+        if (catIngreso.getGasto_mensual()>setenta){
+            indicador.setImageResource(R.drawable.rojo);
+        }
 
         return convertView;
     }

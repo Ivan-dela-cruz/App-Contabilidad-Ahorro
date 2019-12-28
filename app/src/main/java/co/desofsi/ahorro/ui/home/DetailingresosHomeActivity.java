@@ -52,7 +52,7 @@ public class DetailingresosHomeActivity extends AppCompatActivity {
             byte[] image = cursor.getBlob(3);
             double valor = cursor.getDouble(4);
             int id_cat = cursor.getInt(5);
-            arrayList.add(new Ingresos(id, desripcion, fecha, image, valor, id_cat));
+            arrayList.add(new Ingresos(id, desripcion, fecha, image, valor, id_cat,MainActivity.id_user));
 
         }
 

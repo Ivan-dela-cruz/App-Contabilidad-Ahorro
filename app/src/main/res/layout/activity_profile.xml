@@ -120,13 +120,14 @@
                         android:textSize="12dp" />
                 </LinearLayout>
                 <Button
+                    android:textAllCaps="false"
                     android:id="@+id/btn_cerrar_sesion"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="15dp"
                     android:background="@drawable/buttonstyle"
-                    android:text="Cerrar Sesión"
+                    android:text="Cerrar sesión"
                     android:textColor="#fff" />
 
             </LinearLayout>

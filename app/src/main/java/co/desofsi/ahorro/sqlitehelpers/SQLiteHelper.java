@@ -10,16 +10,13 @@ import androidx.annotation.Nullable;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
 
-    final String TABLE_CATEGORIA_INGRESO = "CREATE TABLE IF NOT EXISTS categoria_ingreso(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen BLOB, estado INTEGER)";
-    final String TABLE_CATEGORIA_GASTO = "CREATE TABLE IF NOT EXISTS categoria_gasto(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen BLOB,presupuesto DOUBLE, estado INTEGER)";
-    final String TABLE_CATEGORIA_AHORRO = "CREATE TABLE IF NOT EXISTS categoria_ahorro(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen BLOB, estado INTEGER)";
+    final String TABLE_CATEGORIA_INGRESO = "CREATE TABLE IF NOT EXISTS categoria_ingreso(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen BLOB, estado INTEGER,id_user TEXT NOT NULL CONSTRAINT fk_id_user_cate_gasto REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE)";
+    final String TABLE_CATEGORIA_GASTO = "CREATE TABLE IF NOT EXISTS categoria_gasto(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen BLOB,presupuesto DOUBLE, estado INTEGER,id_user TEXT NOT NULL CONSTRAINT fk_id_user_cate_ingresos REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE)";
+    final String TABLE_CATEGORIA_AHORRO = "CREATE TABLE IF NOT EXISTS categoria_ahorro(id INTEGER PRIMARY KEY AUTOINCREMENT, nombre TEXT, imagen BLOB, estado INTEGER,id_user TEXT NOT NULL CONSTRAINT fk_id_cate_ahorro REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE)";
 
 
-
-
-
-    final String TABLE_INGRESOS = "CREATE TABLE IF NOT EXISTS ingresos(id INTEGER PRIMARY KEY AUTOINCREMENT,descripcion TEXT,fecha TEXT,imagen BLOB,valor DOUBLE, id_cat INTEGER NOT NULL CONSTRAINT fk_id_cat_ingreso REFERENCES categoria_ingreso(id) ON DELETE CASCADE ON UPDATE CASCADE)";
-    final String TABLE_GASTOS = "CREATE TABLE IF NOT EXISTS gastos(id INTEGER PRIMARY KEY AUTOINCREMENT,descripcion TEXT,fecha TEXT,imagen BLOB,valor DOUBLE, id_cat INTEGER NOT NULL CONSTRAINT fk_id_cat_ingreso REFERENCES categoria_gasto(id) ON DELETE CASCADE ON UPDATE CASCADE)";
+    final String TABLE_INGRESOS = "CREATE TABLE IF NOT EXISTS ingresos(id INTEGER PRIMARY KEY AUTOINCREMENT,descripcion TEXT,fecha TEXT,imagen BLOB,valor DOUBLE, id_cat INTEGER NOT NULL CONSTRAINT fk_id_cat_ingreso REFERENCES categoria_ingreso(id) ON DELETE CASCADE ON UPDATE CASCADE ,id_user TEXT NOT NULL CONSTRAINT fk_id_user_ingreso REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE)";
+    final String TABLE_GASTOS = "CREATE TABLE IF NOT EXISTS gastos(id INTEGER PRIMARY KEY AUTOINCREMENT,descripcion TEXT,fecha TEXT,imagen BLOB,valor DOUBLE, id_cat INTEGER NOT NULL CONSTRAINT fk_id_cat_ingreso REFERENCES categoria_gasto(id) ON DELETE CASCADE ON UPDATE CASCADE ,id_user TEXT NOT NULL CONSTRAINT fk_id_user_gasto REFERENCES usuarios(id) ON DELETE CASCADE ON UPDATE CASCADE)";
 
 
     ///String id, String nombre, String apellido, String email, String fecha_n, String genero, byte[] imagen
@@ -41,7 +38,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     ///EJECUCIONES FUNCIONES ************************************************************
 
 
-
     ///INGRESO DE DE VALORES DE INGRESO
 
     public void insertDataUsuarios(String id, String nombre, String apellido, String email, String fecha_n, String genero, byte[] imagen) {
@@ -61,8 +57,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         statement.executeInsert();
 
     }
-
-
 
 
     //ACTUALIZAR PRESUPUESTO
@@ -95,29 +89,31 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
 ///INGRESO DE CATEGORIAS
 
-    public void insertDataCategoriaIngresos(String nombre, byte[] image,  int estado) {
+    public void insertDataCategoriaIngresos(String nombre, byte[] image, int estado, String id_user) {
         SQLiteDatabase database = getWritableDatabase();
-        String sql = "INSERT INTO categoria_ingreso VALUES(null,?,?,?)";
+        String sql = "INSERT INTO categoria_ingreso VALUES(null,?,?,?,?)";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
         statement.bindString(1, nombre);
         statement.bindBlob(2, image);
         statement.bindDouble(3, estado);
+        statement.bindString(4, id_user);
         statement.executeInsert();
 
     }
 
 
     ///INGRESO DE CATEGORIAS GASTOS
-    public void insertDataCategoriaGastos(String nombre, byte[] image, double presupuesto, int estado) {
+    public void insertDataCategoriaGastos(String nombre, byte[] image, double presupuesto, int estado, String id_user) {
         SQLiteDatabase database = getWritableDatabase();
-        String sql = "INSERT INTO categoria_gasto VALUES(null,?,?,?,?)";
+        String sql = "INSERT INTO categoria_gasto VALUES(null,?,?,?,?,?)";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
         statement.bindString(1, nombre);
         statement.bindBlob(2, image);
         statement.bindDouble(3, presupuesto);
         statement.bindDouble(4, estado);
+        statement.bindString(5, id_user);
         statement.executeInsert();
 
     }
@@ -125,11 +121,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     ///INGRESO DE DE VALORES DE INGRESO
 
-    public void insertDataIngresos(String descripcion, String fecha, byte[] imagen, double valor, int id_cat) {
+    public void insertDataIngresos(String descripcion, String fecha, byte[] imagen, double valor, int id_cat, String id_user) {
 
         //descripcion ,fecha ,imagen ,valor
         SQLiteDatabase database = getWritableDatabase();
-        String sql = "INSERT INTO ingresos VALUES(null,?,?,?,?,?)";
+        String sql = "INSERT INTO ingresos VALUES(null,?,?,?,?,?,?)";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
         statement.bindString(1, descripcion);
@@ -137,17 +133,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         statement.bindBlob(3, imagen);
         statement.bindDouble(4, valor);
         statement.bindDouble(5, id_cat);
+        statement.bindString(6, id_user);
         statement.executeInsert();
 
     }
 
     ///INGRESO DE DE VALORES DE GASTOS
 
-    public void insertDataGastos(String descripcion, String fecha, byte[] imagen, double valor, int id_cat) {
+    public void insertDataGastos(String descripcion, String fecha, byte[] imagen, double valor, int id_cat, String id_user) {
 
         //descripcion ,fecha ,imagen ,valor
         SQLiteDatabase database = getWritableDatabase();
-        String sql = "INSERT INTO gastos VALUES(null,?,?,?,?,?)";
+        String sql = "INSERT INTO gastos VALUES(null,?,?,?,?,?,?)";
         SQLiteStatement statement = database.compileStatement(sql);
         statement.clearBindings();
         statement.bindString(1, descripcion);
@@ -155,6 +152,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         statement.bindBlob(3, imagen);
         statement.bindDouble(4, valor);
         statement.bindDouble(5, id_cat);
+        statement.bindString(6, id_user);
         statement.executeInsert();
 
     }
@@ -169,13 +167,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
+        db.execSQL(TABLE_USUARIOS);
         db.execSQL(TABLE_CATEGORIA_GASTO);
         db.execSQL(TABLE_CATEGORIA_INGRESO);
         db.execSQL(TABLE_CATEGORIA_AHORRO);
         db.execSQL(TABLE_INGRESOS);
         db.execSQL(TABLE_GASTOS);
-        db.execSQL(TABLE_USUARIOS);
+
     }
 
     @Override

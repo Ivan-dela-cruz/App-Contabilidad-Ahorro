@@ -66,7 +66,7 @@ public class Home_Gastos_Activity extends AppCompatActivity {
     Calendar calendar;
     private String nombreCategoria;
     private int id_cate;
-
+    private ArrayList<CategoriaGasto> arrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,7 @@ public class Home_Gastos_Activity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_home__gastos_);
 
+        init();
         calendar = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance().format(calendar.getInstance().getTime());
 
@@ -85,29 +86,8 @@ public class Home_Gastos_Activity extends AppCompatActivity {
         separador.setDecimalSeparator('.');
         decimalFormat = new DecimalFormat("#.00", separador);
 
-        final ArrayList<CategoriaGasto> arrayList = new ArrayList<>();
+        llenarCategoriaGastos();
 
-
-        //obteer datos de la base de datos
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto");
-
-        arrayList.clear();
-        while (cursor.moveToNext()) {
-            int id = cursor.getInt(0);
-            String nombre = cursor.getString(1);
-            byte[] image = cursor.getBlob(2);
-            double pre = cursor.getDouble(3);
-            int estado = cursor.getInt(4);
-            arrayList.add(new CategoriaGasto(id, nombre, image, pre, estado));
-
-        }
-
-
-        gridView = (GridView) findViewById(R.id.grid_ingresos);
-        adapter = new HomeGastosGridAdapter(this, arrayList);
-        gridView.setAdapter(adapter);
-
-        init();
         btn_fecha.setText(getFechaHoy());
 
 
@@ -146,18 +126,22 @@ public class Home_Gastos_Activity extends AppCompatActivity {
                                     nombreCategoria,
                                     btn_fecha.getText().toString().trim(),
                                     imageViewToByte(img_ingreso),
-                                    new_valor, id_cate
+                                    new_valor, id_cate,MainActivity.id_user
 
                             );
+
+                            gridView.clearAnimation();
+                            llenarCategoriaGastos();
                         } else {
                             MainActivity.sqLiteHelper.insertDataGastos(
                                     text_descrip.getText().toString().trim(),
                                     btn_fecha.getText().toString().trim(),
                                     imageViewToByte(img_ingreso),
-                                    new_valor, id_cate
+                                    new_valor, id_cate,MainActivity.id_user
 
                             );
-
+                            gridView.clearAnimation();
+                            llenarCategoriaGastos();
                         }
 
                         Toast.makeText(getApplicationContext(), "Agregado exitosamente!", Toast.LENGTH_SHORT).show();
@@ -608,6 +592,37 @@ public class Home_Gastos_Activity extends AppCompatActivity {
 
     }
 
+    private void llenarCategoriaGastos() {
+
+       arrayList = new ArrayList<>();
+
+
+        //obteer datos de la base de datos
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '"+MainActivity.id_user+"'");
+
+        arrayList.clear();
+        while (cursor.moveToNext()) {
+            int id = cursor.getInt(0);
+            String nombre = cursor.getString(1);
+            byte[] image = cursor.getBlob(2);
+            double pre = cursor.getDouble(3);
+            int estado = cursor.getInt(4);
+
+            double total = 0;
+            Cursor mensual = MainActivity.sqLiteHelper.getDataTable("SELECT  SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  (gastos.id_cat = categoria_gasto.id) AND (categoria_gasto.estado = 1) AND categoria_gasto.id = '"+id+"'  AND categoria_gasto.id_user = '"+MainActivity.id_user+"' AND SUBSTR(gastos.fecha, 4, 2) = '12' ");
+            if(mensual.moveToFirst()){
+                total = mensual.getDouble(0);
+            }
+
+
+            arrayList.add(new CategoriaGasto(id, nombre, image, pre, estado,total));
+
+        }
+        adapter = new HomeGastosGridAdapter(this, arrayList);
+        gridView.setAdapter(adapter);
+
+    }
+
 
     public String getFechaHoy() {
         String fecha_dia = "";
@@ -634,6 +649,7 @@ public class Home_Gastos_Activity extends AppCompatActivity {
     }
 
     public void init() {
+        gridView = (GridView) findViewById(R.id.grid_ingresos);
         img_ingreso = (ImageView) findViewById(R.id.img_ingreso_elejido);
         text_descrip = (EditText) findViewById(R.id.txt_describ_ingreso);
         btn_fecha = (Button) findViewById(R.id.btn_fecha);
