@@ -3,6 +3,7 @@ package co.desofsi.ahorro.actividades;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +15,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,10 +34,12 @@ public class ProfileActivity extends AppCompatActivity {
 
     //String id, String nombre, String apellido, String email, String fecha_n, String genero, byte[] imagen
     private Usuario usuario;
-    private TextView text_nombres,email,fecha_n,genero;
+    private TextView text_nombres, email, fecha_n, genero;
     private ImageView image_user;
     private String id;
     private Button logaout;
+
+    private Bitmap bitmap;
 
     GoogleSignInClient mGoogleSignInClient;
 
@@ -47,10 +55,46 @@ public class ProfileActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-       // String id = (String) getIntent().getExtras().getSerializable("id_user");
-        /* id = MainActivity.id_user;
+        // String id = (String) getIntent().getExtras().getSerializable("id_user");
+         id = MainActivity.id_user;
 
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id = "+id);
+         loadProfileUser();
+
+        Glide.with(this).load(String.valueOf(MainActivity.url_image_user)).into(image_user);
+
+
+        logaout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, splahActivity.class);
+
+                switch (v.getId()) {
+                    // ...
+                    case R.id.btn_cerrar_sesion:
+                        switch (MainActivity.btn_press){
+                            case 0:
+                                disconnectFromFacebook();
+                                startActivity(intent);
+                                break;
+
+                            case 1:
+                                signOut();
+
+                                startActivity(intent);
+                                break;
+                        }
+
+
+                        break;
+                    // ...
+                }
+            }
+        });
+
+    }
+
+    public void loadProfileUser(){
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id = '"+id+"'");
 
         if (cursor.moveToFirst()){
 
@@ -70,44 +114,28 @@ public class ProfileActivity extends AppCompatActivity {
             fecha_n.setText(usuario.getFecha_n());
 
             byte[] img_user = usuario.getImagen();
-            Bitmap bitmap = BitmapFactory.decodeByteArray(img_user, 0, img_user.length);
-            image_user.setImageBitmap(bitmap);
+             bitmap = BitmapFactory.decodeByteArray(img_user, 0, img_user.length);
+           // image_user.setImageBitmap(bitmap);
 
         }
-
-         */
-
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personGivenName = acct.getGivenName();
-            String personFamilyName = acct.getFamilyName();
-            String personEmail = acct.getEmail();
-            String personId = acct.getId();
-            Uri personPhoto = acct.getPhotoUrl();
-            text_nombres .setText(personName+" "+personGivenName);
-            email.setText(personEmail);
-            genero.setText(personId);
-            fecha_n.setText("12");
-
-            Glide.with(this).load(String.valueOf(personPhoto)).into(image_user);
-        }
-
-        logaout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (v.getId()) {
-                    // ...
-                    case R.id.btn_cerrar_sesion:
-                        signOut();
-                        break;
-                    // ...
-                }
-            }
-        });
-
     }
 
+
+    public void disconnectFromFacebook() {
+
+        if (AccessToken.getCurrentAccessToken() == null) {
+            return; // already logged out
+        }
+
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/me/permissions/", null, HttpMethod.DELETE.DELETE, new GraphRequest.Callback() {
+            @Override
+            public void onCompleted(GraphResponse graphResponse) {
+
+                LoginManager.getInstance().logOut();
+
+            }
+        }).executeAsync();
+    }
 
     private void signOut() {
         mGoogleSignInClient.signOut()
@@ -120,7 +148,7 @@ public class ProfileActivity extends AppCompatActivity {
                 });
     }
 
-    private void init(){
+    private void init() {
         text_nombres = (TextView) findViewById(R.id.txt_names_profile);
         email = (TextView) findViewById(R.id.txt_email_profile);
         genero = (TextView) findViewById(R.id.txt_genero_profile);

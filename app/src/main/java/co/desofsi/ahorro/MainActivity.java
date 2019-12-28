@@ -1,5 +1,6 @@
 package co.desofsi.ahorro;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
@@ -7,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 
@@ -22,6 +24,8 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -30,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import co.desofsi.ahorro.actividades.LoginActivity;
 import co.desofsi.ahorro.actividades.ProfileActivity;
+import co.desofsi.ahorro.entidades.Usuario;
 import co.desofsi.ahorro.sqlitehelpers.SQLiteHelper;
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -56,12 +61,16 @@ public class MainActivity extends AppCompatActivity {
     public static SQLiteHelper sqLiteHelper;
 
     public static String id_user = "0";
+    public static int btn_press = -1;
+    public static String url_image_user = "";
     private LoginButton loginButton;
     private TextView txt_name, txt_email;
     private CircleImageView circleImageView;
     private ImageView img_default;
 
+    private Usuario usuario;
 
+    @SuppressLint("WrongThread")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,15 +107,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                intent.putExtra("id_user",id_user);
+                //intent.putExtra("id_user", id_user);
                 startActivity(intent);
             }
         });
 
 
         if (AccessToken.getCurrentAccessToken() == null) {
-            goLoginScreen();
+            btn_press = 1;
+            loadGoogleProfile();
+
         } else {
+            btn_press = 0;
             LoadUserProfile(AccessToken.getCurrentAccessToken());
         }
 
@@ -130,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void goLoginScreen() {
         Intent intent = new Intent(this, LoginActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         startActivity(intent);
     }
 
@@ -153,13 +165,9 @@ public class MainActivity extends AppCompatActivity {
                     String id = object.getString("id");
 
                     String image_url = "https://graph.facebook.com/" + id + "/picture?type=normal";
+                    url_image_user = image_url;
 
-                    // Toast.makeText(MainActivity.this,first_name,Toast.LENGTH_SHORT).show();
 
-                    txt_email.setText(email);
-                    txt_name.setText(first_name + " " + last_name);
-                    RequestOptions requestOptions = new RequestOptions();
-                    requestOptions.dontAnimate();
                     Glide.with(MainActivity.this).load(image_url).into(circleImageView);
                     id_user = id;
 
@@ -170,11 +178,18 @@ public class MainActivity extends AppCompatActivity {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                     byte[] byteArray = stream.toByteArray();
 
-                    Cursor cursor = sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id =" + id);
+                    Cursor cursor = sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id = '" + id + "'");
 
                     if (cursor.moveToFirst()) {
+                        loadProfileUser();
                         Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
                     } else {
+
+                        txt_email.setText(email);
+                        txt_name.setText(first_name + " " + last_name);
+                        RequestOptions requestOptions = new RequestOptions();
+                        requestOptions.dontAnimate();
+
                         sqLiteHelper.insertDataUsuarios(id, first_name, last_name, email, birthday, "Otro", byteArray);
 
                         Toast.makeText(MainActivity.this, "Registrado", Toast.LENGTH_SHORT).show();
@@ -193,6 +208,86 @@ public class MainActivity extends AppCompatActivity {
         graphRequest.setParameters(parameters);
         graphRequest.executeAsync();
     }
+
+
+    public void loadGoogleProfile() {
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+
+            try {
+                String personName = acct.getDisplayName();
+                String personGivenName = acct.getGivenName();
+                String personFamilyName = acct.getFamilyName();
+                String personEmail = acct.getEmail();
+                String personId = acct.getId();
+                Uri personPhoto = acct.getPhotoUrl();
+
+                url_image_user = String.valueOf(personPhoto);
+                Glide.with(MainActivity.this).load(String.valueOf(personPhoto)).into(circleImageView);
+                id_user = personId;
+
+
+                Bitmap bitmap = ((BitmapDrawable) img_default.getDrawable()).getBitmap();
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+                Cursor cursor = sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id = '" + personId + "'");
+
+                if (cursor.moveToFirst()) {
+                    loadProfileUser();
+                    Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
+                } else {
+
+
+                    txt_email.setText(personEmail);
+                    txt_name.setText(personGivenName + " " + personFamilyName);
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.dontAnimate();
+
+                    sqLiteHelper.insertDataUsuarios(personId, personGivenName, personFamilyName, personEmail, "00/00/0000", "Otro", byteArray);
+
+                    Toast.makeText(MainActivity.this, "Registrado", Toast.LENGTH_SHORT).show();
+                }
+            } catch (Exception e) {
+
+            }
+
+
+        } else {
+            goLoginScreen();
+        }
+    }
+
+
+    public void loadProfileUser() {
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM usuarios WHERE id = '" + id_user + "'");
+
+        if (cursor.moveToFirst()) {
+
+            byte[] image = cursor.getBlob(6);
+            usuario = new Usuario(
+                    cursor.getString(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3),
+                    cursor.getString(4),
+                    cursor.getString(5),
+                    image);
+
+
+            txt_name.setText(usuario.getNombre() + " " + usuario.getApellido());
+            txt_email.setText(usuario.getEmail());
+
+
+            byte[] img_user = usuario.getImagen();
+            Bitmap bitmap = BitmapFactory.decodeByteArray(img_user, 0, img_user.length);
+            // image_user.setImageBitmap(bitmap);
+
+        }
+    }
+
 
     public void init() {
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

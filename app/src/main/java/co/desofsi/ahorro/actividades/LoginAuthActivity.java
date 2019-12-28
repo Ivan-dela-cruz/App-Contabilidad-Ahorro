@@ -30,6 +30,8 @@ public class LoginAuthActivity extends AppCompatActivity {
 
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();

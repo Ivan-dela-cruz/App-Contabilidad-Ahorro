@@ -16,35 +16,63 @@
         android:layout_height="200dp"
         android:src="@drawable/pig_money"
         app:civ_border_width="2dp"
-        app:civ_border_color="#FF000000" />
-    <TextView
-        android:text="FinanAhorro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="20dp"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:id="@+id/txt_name"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:id="@+id/txt_email"/>
+        app:civ_border_color="#FF000000"
+        android:layout_marginBottom="80dp"/>
 
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/login_button"
+
+
+    <FrameLayout
+        android:id="@+id/FrameLayout1"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:textSize="18dp"
-        android:gravity="center"/>
+        android:layout_marginRight="30dp">
+
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/fb"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#416BC1"
+            android:onClick="onClick"
+            android:text="FaceBook Login"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/FrameLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp">
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="0dp"
+            />
+
+        <Button
+            android:id="@+id/google"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#cf4333"
+            android:onClick="onClick"
+            android:text="Google Login"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+
+
 
 
 

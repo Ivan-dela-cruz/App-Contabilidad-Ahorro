@@ -34,7 +34,7 @@
                 android:layout_marginTop="10dp"
                 android:text="Wiliam Snoe"
                 android:textColor="#fff"
-                android:textSize="21sp"
+                android:textSize="14dp"
                 android:textStyle="bold" />
         </LinearLayout>
 
@@ -70,7 +70,8 @@
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="20dp"
                         android:text="Wiliam@gmail.com"
-                        android:textStyle="bold" />
+
+                        android:textSize="12dp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -93,7 +94,7 @@
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="20dp"
                         android:text="Add to group"
-                        android:textStyle="bold" />
+                        android:textSize="12dp"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -116,7 +117,7 @@
                         android:layout_gravity="center_vertical"
                         android:paddingLeft="20dp"
                         android:text="Show all comments"
-                        android:textStyle="bold" />
+                        android:textSize="12dp" />
                 </LinearLayout>
                 <Button
                     android:id="@+id/btn_cerrar_sesion"
@@ -127,6 +128,7 @@
                     android:background="@drawable/buttonstyle"
                     android:text="Cerrar Sesión"
                     android:textColor="#fff" />
+
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
