@@ -69,22 +69,6 @@ public class CategoriaIngreso implements Serializable {
         this.estado = estado;
     }
 
-
-    public void loadCategoryIngreso(MainActivity mainActivity) {
-        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.garaje);
-        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Garage", imageViewToByte(icon), 1,MainActivity.id_user);
-
-
-
-        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.bici);
-        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Bicicleta", imageViewToByte(icon), 1,MainActivity.id_user);
-
-
-        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.tren);
-        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Tren", imageViewToByte(icon), 1,MainActivity.id_user);
-    }
-
-
     private byte[] imageViewToByte(Bitmap bitmap_image) {
         Bitmap bitmap = bitmap_image;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -92,5 +76,76 @@ public class CategoriaIngreso implements Serializable {
         byte[] byteArray = stream.toByteArray();
         return byteArray;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void loadCategoryIngreso(MainActivity mainActivity) {
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.billetera_in);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Salario", imageViewToByte(icon), 1,MainActivity.id_user);
+
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.bolsa);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Premios", imageViewToByte(icon),  1,MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.regalo);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Subsidio", imageViewToByte(icon), 1,MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.ventas);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Venta", imageViewToByte(icon), 1,MainActivity.id_user);
+
+
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.alquiler_in);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Alquiler", imageViewToByte(icon), 1,MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.rembolso_in);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Rembolso", imageViewToByte(icon),  1,MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.cupones_in);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Cupones", imageViewToByte(icon),  1,MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.maquina);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Lotería", imageViewToByte(icon), 1,MainActivity.id_user);
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.line_chart);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Dividendos", imageViewToByte(icon), 1,MainActivity.id_user);
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.inversion_in);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Inveriones", imageViewToByte(icon), 1,MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.otros_in);
+        mainActivity.sqLiteHelper.insertDataCategoriaIngresos("Otros", imageViewToByte(icon),  1,MainActivity.id_user);
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
 
 }

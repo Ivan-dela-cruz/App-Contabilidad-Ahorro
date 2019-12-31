@@ -149,7 +149,7 @@
                     android:layout_gravity="center_horizontal"
                     android:padding="2dp"
                     android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/ingresos" />
+                    app:srcCompat="@drawable/rembolso_in" />
 
                 <TextView
                     android:textColor="@color/md_green_A200"

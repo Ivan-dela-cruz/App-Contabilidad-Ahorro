@@ -23,13 +23,12 @@ public class CategoriaGasto implements Serializable {
     private Bitmap icon;
 
 
-
     public CategoriaGasto() {
 
     }
 
 
-    public CategoriaGasto(int id, String nombre, byte[] image, double presupuesto, int estado,String id_user) {
+    public CategoriaGasto(int id, String nombre, byte[] image, double presupuesto, int estado, String id_user) {
         this.id = id;
         this.nombre = nombre;
         this.image = image;
@@ -103,28 +102,134 @@ public class CategoriaGasto implements Serializable {
         this.estado = estado;
     }
 
-
-    public void loadCategoryGasto(MainActivity mainActivity) {
-        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.agua);
-        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Agua", imageViewToByte(icon), 0, 1,MainActivity.id_user);
-
-
-
-        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.abrigo);
-        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Abrigo", imageViewToByte(icon), 0, 1,MainActivity.id_user);
-
-
-        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.ambulancia);
-        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Ambulancia", imageViewToByte(icon), 0, 1,MainActivity.id_user);
-    }
-
-
     private byte[] imageViewToByte(Bitmap bitmap_image) {
         Bitmap bitmap = bitmap_image;
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
+    }
+
+
+    public void loadCategoryGasto(MainActivity mainActivity) {
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.comida);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Comida", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.agua);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Agua", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.tren);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Transporte", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.home);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Hogar", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        ///chesmos mi ayudnate ñope
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.autos);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Automóvil", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.joytick);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Entretenimiento", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.trajeta);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Compras", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.ropa);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Ropa", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.seguridad);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Seguro", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.documento_per);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Impuesto", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.telefono_ele);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Teléfono", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.cigarro);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Cigarrillo", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.hospital);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Salud", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.pesista);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Deporte", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.coche_fa);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Bebe", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.pez);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Mascota", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.labial);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Belleza", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.tv_ele);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Electrónica", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.papas);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Comida", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.coctel);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Vino", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.legunbres);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Verduras", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.helado);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Aperitivo", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.regalo);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Regalo", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.avion);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Viajar", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.estudio);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Educacion", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.manzana);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Fruta", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.libros);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Libros", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.otros_in);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Otros", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
+
+        icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.escritorio_mu);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Oficina", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+
     }
 }
 

@@ -1,6 +1,8 @@
 package co.desofsi.ahorro.ui.slideshow;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,6 +11,8 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.RingtoneManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,6 +40,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -48,6 +53,9 @@ import co.desofsi.ahorro.adaptadores.PresupuestoSlideShowGastosGridAdapter;
 import co.desofsi.ahorro.adaptadores.RecyclerPresuSlideShowListaGastosAdapter;
 import co.desofsi.ahorro.entidades.CategoriaGasto;
 import co.desofsi.ahorro.ui.home.Home_Gastos_Activity;
+
+import static co.desofsi.ahorro.entidades.App.CHANNEL_1_ID;
+import static co.desofsi.ahorro.entidades.App.CHANNEL_2_ID;
 
 public class SlideshowFragment extends Fragment {
 
@@ -68,8 +76,8 @@ public class SlideshowFragment extends Fragment {
 
     private Button btnCero, btnUno, btnDos, btnTres, btnCuatro, btnCinco, btnSeis, btnSiete, btnOcho,
             btnNueve, btnPunto, btnIgual, btnSuma, btnResta, btnMulti, btnDiv, btnLimpiar;
-    private TextView etconcatenar, etProceso ;
-           // , etProceso;
+    private TextView etconcatenar, etProceso;
+    // , etProceso;
     private double numero1, numero2, resultado;
     private String operador;
 
@@ -84,14 +92,20 @@ public class SlideshowFragment extends Fragment {
     private double presu_cat;
     private int id_cate;
 
-    private ArrayList<CategoriaGasto>lista_categoria_gastos;
+    private ArrayList<CategoriaGasto> lista_categoria_gastos;
+
+
+    ///NOTIFICACIONES
+    private NotificationManagerCompat notificationManagerCompat;
+
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         slideshowViewModel =
                 ViewModelProviders.of(this).get(SlideshowViewModel.class);
         final View root = inflater.inflate(R.layout.fragment_slideshow, container, false);
 
-
+        notificationManagerCompat = NotificationManagerCompat.from(getActivity());
         calendar = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance().format(calendar.getInstance().getTime());
 
@@ -102,8 +116,6 @@ public class SlideshowFragment extends Fragment {
         llenarGridView(root);
 
         btn_fecha.setText(getFechaHoy());
-
-
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -130,10 +142,6 @@ public class SlideshowFragment extends Fragment {
         });
 
 
-
-
-
-
         btn_guadar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,10 +153,10 @@ public class SlideshowFragment extends Fragment {
                         double new_valor = Double.parseDouble(etProceso.getText().toString());
 
 
-                            MainActivity.sqLiteHelper.insertDataPresupuesoGastos(
-                                    id_cate,new_valor
+                        MainActivity.sqLiteHelper.insertDataPresupuesoGastos(
+                                id_cate, new_valor
 
-                            );
+                        );
 
                         Toast.makeText(getActivity(), "Presupuesto actualizado exitosamente!", Toast.LENGTH_SHORT).show();
 
@@ -166,8 +174,6 @@ public class SlideshowFragment extends Fragment {
 
             }
         });
-
-
 
 
         ///*****************************EVENTOS CLICK BOTONES CALCULADORA ****************************************
@@ -576,18 +582,18 @@ public class SlideshowFragment extends Fragment {
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        if(dayOfMonth<10){
+                        if (dayOfMonth < 10) {
 
-                            if((month+1)<10){
-                                btn_fecha.setText("0"+dayOfMonth + "/0" + (month + 1) + "/" + year);
-                            }else{
-                                btn_fecha.setText("0"+dayOfMonth + "/" + (month + 1) + "/" + year);
+                            if ((month + 1) < 10) {
+                                btn_fecha.setText("0" + dayOfMonth + "/0" + (month + 1) + "/" + year);
+                            } else {
+                                btn_fecha.setText("0" + dayOfMonth + "/" + (month + 1) + "/" + year);
                             }
 
-                        }else {
-                            if((month+1)<10){
+                        } else {
+                            if ((month + 1) < 10) {
                                 btn_fecha.setText(dayOfMonth + "/0" + (month + 1) + "/" + year);
-                            }else{
+                            } else {
                                 btn_fecha.setText(dayOfMonth + "/" + (month + 1) + "/" + year);
                             }
 
@@ -599,19 +605,15 @@ public class SlideshowFragment extends Fragment {
         });
 
 
-
-
-
-
         return root;
     }
 
-    public void llenarGridView(View root){
+    public void llenarGridView(View root) {
         lista_categoria_gastos = new ArrayList<>();
 
 
         //obteer datos de la base de datos
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '"+MainActivity.id_user+"'");
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '" + MainActivity.id_user + "'");
         lista_categoria_gastos.clear();
         int contador = 0;
         while (cursor.moveToNext()) {
@@ -621,14 +623,14 @@ public class SlideshowFragment extends Fragment {
             double pre = cursor.getDouble(3);
             int estado = cursor.getInt(4);
             double total = 0;
-            Cursor mensual = MainActivity.sqLiteHelper.getDataTable("SELECT  SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  (gastos.id_cat = categoria_gasto.id) AND (categoria_gasto.estado = 1) AND categoria_gasto.id = '"+id+"'  AND categoria_gasto.id_user = '"+MainActivity.id_user+"' AND SUBSTR(gastos.fecha, 4, 2) = '12' ");
-            if(mensual.moveToFirst()){
+            Cursor mensual = MainActivity.sqLiteHelper.getDataTable("SELECT  SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  (gastos.id_cat = categoria_gasto.id) AND (categoria_gasto.estado = 1) AND categoria_gasto.id = '" + id + "'  AND categoria_gasto.id_user = '" + MainActivity.id_user + "' AND SUBSTR(gastos.fecha, 4, 2) = '12' ");
+            if (mensual.moveToFirst()) {
                 total = mensual.getDouble(0);
             }
-            if(total>pre){
+            if (total > pre) {
                 contador++;
             }
-            lista_categoria_gastos.add(new CategoriaGasto(id, nombre, image, pre, estado,total));
+            lista_categoria_gastos.add(new CategoriaGasto(id, nombre, image, pre, estado, total));
 
         }
 
@@ -636,8 +638,9 @@ public class SlideshowFragment extends Fragment {
         adapter = new PresupuestoSlideShowGastosGridAdapter(getActivity(), lista_categoria_gastos);
         gridView.setAdapter(adapter);
 
-        if(contador>=1){
-           // Toast.makeText(getActivity(),"El presupuesto a sido sobrepaso",Toast.LENGTH_SHORT).show();
+        if (contador >= 1) {
+            // Toast.makeText(getActivity(),"El presupuesto a sido sobrepaso",Toast.LENGTH_SHORT).show();
+           /*
             NotificationCompat.Builder notifiaction_presupuesto = new NotificationCompat.Builder(getActivity().getApplicationContext());
             notifiaction_presupuesto.setSmallIcon(R.drawable.ic_notifications_active_black_24dp);
             notifiaction_presupuesto.setLargeIcon(((BitmapDrawable)getResources().getDrawable(R.drawable.carrito)).getBitmap());
@@ -654,9 +657,55 @@ public class SlideshowFragment extends Fragment {
 
             notificationManager.notify(1900,notifiaction_presupuesto.build());
 
+            */
+
+           sendChannel1(root);
+          // sendChannel2(root);
+
+
         }
 
 
+    }
+
+
+    public void sendChannel1(View view) {
+
+        Intent miIntencion = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+        PendingIntent pendiente = PendingIntent.getActivity(getActivity().getApplicationContext(),0,miIntencion,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(getActivity(),CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.carrito)
+                .setContentTitle("Presupuesto excedido")
+                .setContentText("Ha sobrepasado el presupuesto establecido en los gastos")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(pendiente)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .build();
+
+
+
+        notificationManagerCompat.notify(1,notification);
+
+    }
+
+    public void sendChannel2(View view) {
+
+        Intent miIntencion = new Intent(getActivity().getApplicationContext(),MainActivity.class);
+        PendingIntent pendiente = PendingIntent.getActivity(getActivity().getApplicationContext(),0,miIntencion,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(getActivity(),CHANNEL_2_ID)
+                .setSmallIcon(R.drawable.carrito)
+                .setContentTitle("Presupuesto excedido")
+                .setContentText("Ha sobrepasado el presupuesto establecido en los gastos")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(pendiente)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .build();
+
+        notificationManagerCompat.notify(2,notification);
     }
 
     public String getFechaHoy() {
@@ -664,17 +713,17 @@ public class SlideshowFragment extends Fragment {
         dia = calendar.get(Calendar.DAY_OF_MONTH);
         mes = calendar.get(Calendar.MONTH) + 1;
         anio = calendar.get(Calendar.YEAR);
-        if(dia<10){
-            if(mes<10){
-                fecha_dia = "0"+dia + "/0" + mes + "/" + anio;
-            }else{
-                fecha_dia = "0"+dia + "/" + mes + "/" + anio;
+        if (dia < 10) {
+            if (mes < 10) {
+                fecha_dia = "0" + dia + "/0" + mes + "/" + anio;
+            } else {
+                fecha_dia = "0" + dia + "/" + mes + "/" + anio;
             }
 
-        }else {
-            if(mes<10){
+        } else {
+            if (mes < 10) {
                 fecha_dia = dia + "/0" + mes + "/" + anio;
-            }else{
+            } else {
                 fecha_dia = dia + "/" + mes + "/" + anio;
             }
 
@@ -683,7 +732,7 @@ public class SlideshowFragment extends Fragment {
         return fecha_dia;
     }
 
-    public void init( View root) {
+    public void init(View root) {
 
         gridView = (GridView) root.findViewById(R.id.grid_gasto_presupuesto);
 

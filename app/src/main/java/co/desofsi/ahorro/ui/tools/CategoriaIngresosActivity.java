@@ -41,6 +41,25 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
     private ImageView camahospital, dentista, doctor, emfermera, frascopastilla, gotero, hospital, jeringa, lecion, maletin, pildora, tratamiento;
 
 
+
+    ///familia
+    private ImageView icon_bebe_fa, icon_biberon_fa, icon_sonajero_fa, icon_coche_fa, icon_osito_fa, icon_pato_fa, icon_gato_fa;
+    //muebles
+    private ImageView icon_llave_mu, icon_foco_mu, icon_maceta_mu, icon_rosa_mu, icon_tostadora, icon_microondas, icon_refrigerador, icon_lavadora, icon_ducha, icon_baniera, icon_banio, icon_llavein, icon_calefactor, icon_secadora, icon_armario_mu, icon_cama, icon_escritorio;
+    //electronica
+    private ImageView icon_telefono, icon_camara, icon_reloj, icon_audifonos, icon_tv, icon_laptop, icon_impresora;
+    //educacion
+    private ImageView icon_escuela, icon_piano, icon_paleta, icon_compas, icon_guitara, icon_cuaderno, icon_calculadora;
+    //personal
+    private ImageView icon_boda, icon_documento, icon_unia, icon_peinado;
+    //vida
+    private ImageView icon_pareja, icon_montania, icon_acampar, icon_palmera;
+    //ingresos
+    private ImageView icon_tarjeta, icon_dinero, icon_transferencia;
+
+
+
+
     EditText txt_nom;
     Button btn_elije;
     ImageButton btn_grabar;
@@ -774,6 +793,362 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
         });
 
 
+
+
+        ///ultimAS ADICIONES *************************************
+        icon_bebe_fa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.bebe_fa);
+            }
+        });
+
+        icon_biberon_fa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.biberon_fa);
+            }
+        });
+
+        icon_sonajero_fa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.sonajero_fa);
+            }
+        });
+
+        icon_coche_fa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.coche_fa);
+            }
+        });
+
+        icon_osito_fa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.oso_fa);
+            }
+        });
+
+        icon_pato_fa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.pato_fa);
+            }
+        });
+
+        icon_gato_fa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.gato_fa);
+            }
+        });
+
+
+        icon_llave_mu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.llave_mu);
+            }
+        });
+
+        icon_foco_mu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.foco_mu);
+            }
+        });
+
+        icon_maceta_mu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.maceta_mu);
+            }
+        });
+
+        icon_rosa_mu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.rosa_mu);
+            }
+        });
+
+        icon_tostadora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.tostador_mu);
+            }
+        });
+
+        icon_microondas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.microondas_mu);
+            }
+        });
+
+
+        icon_secadora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.secadoraca_mu);
+            }
+        });
+
+        icon_refrigerador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.refrigerador_mu);
+            }
+        });
+
+
+        icon_lavadora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.lavadora);
+            }
+        });
+
+        icon_ducha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.ducha_mu);
+            }
+        });
+
+        icon_baniera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.baniera_mu);
+            }
+        });
+
+        icon_banio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.banio_mu);
+            }
+        });
+
+        icon_llavein.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.llavein_mu);
+            }
+        });
+
+        icon_calefactor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.calefactor_mu);
+            }
+        });
+
+        icon_armario_mu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.armario);
+            }
+        });
+
+
+        icon_cama.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.cama_mu);
+            }
+        });
+
+        icon_escritorio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.escritorio_mu);
+            }
+        });
+
+
+        icon_telefono.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.telefono_ele);
+            }
+        });
+
+        icon_camara.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.camara_ele);
+            }
+        });
+
+        icon_reloj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.reloj_ele);
+            }
+        });
+
+        icon_audifonos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.auriculares_ele);
+            }
+        });
+
+        icon_tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.tv_ele);
+            }
+        });
+
+        icon_laptop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.laptop_ele);
+            }
+        });
+
+        icon_impresora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.impresora_ele);
+            }
+        });
+
+
+        icon_escuela.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.escuela_edu);
+            }
+        });
+
+        icon_piano.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.piano_edu);
+            }
+        });
+
+        icon_paleta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.peleta_edu);
+            }
+        });
+
+        icon_compas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.compas_edu);
+            }
+        });
+
+        icon_guitara.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.guitarra_edu);
+            }
+        });
+
+        icon_cuaderno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.cuaderno_edu);
+            }
+        });
+
+        icon_calculadora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.calculadora_edu);
+            }
+        });
+
+
+        icon_boda.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.casador_per);
+            }
+        });
+
+        icon_documento.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.documento_per);
+            }
+        });
+
+        icon_unia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.manicure_per);
+            }
+        });
+
+        icon_peinado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.peinado_per);
+            }
+        });
+
+
+        icon_pareja.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.pareja_vi);
+            }
+        });
+
+        icon_montania.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.montania_vi);
+            }
+        });
+
+        icon_acampar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.acampar_vi);
+            }
+        });
+
+        icon_palmera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.palmera_vi);
+            }
+        });
+
+
+        icon_tarjeta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.tarjeta_in);
+            }
+        });
+
+        icon_dinero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.dinero_in);
+            }
+        });
+
+        icon_transferencia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img_elije.setImageResource(R.drawable.transferencia_in);
+            }
+        });
+
+
     }
 
 
@@ -1002,6 +1377,114 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
         pan3 = (ImageView) findViewById(R.id.icon_pan3);
         */
 
+
+
+
+        icon_bebe_fa = (ImageView) findViewById(R.id.icon_bebe_fa);
+
+        icon_biberon_fa = (ImageView) findViewById(R.id.icon_biberon_fa);
+
+        icon_sonajero_fa = (ImageView) findViewById(R.id.icon_sonajero_fa);
+
+        icon_coche_fa = (ImageView) findViewById(R.id.icon_coche_fa);
+
+        icon_osito_fa = (ImageView) findViewById(R.id.icon_osito_fa);
+
+        icon_pato_fa = (ImageView) findViewById(R.id.icon_pato_fa);
+
+        icon_pato_fa = (ImageView) findViewById(R.id.icon_pato_fa);
+
+        icon_gato_fa = (ImageView) findViewById(R.id.icon_gato_fa);
+
+
+        icon_llave_mu = (ImageView) findViewById(R.id.icon_llave_mu);
+
+        icon_foco_mu = (ImageView) findViewById(R.id.icon_foco_mu);
+
+        icon_maceta_mu = (ImageView) findViewById(R.id.icon_maceta_mu);
+
+        icon_rosa_mu = (ImageView) findViewById(R.id.icon_rosa_mu);
+
+        icon_tostadora = (ImageView) findViewById(R.id.icon_tostadora);
+
+        icon_microondas = (ImageView) findViewById(R.id.icon_microondas);
+
+        icon_refrigerador = (ImageView) findViewById(R.id.icon_refrigerador);
+
+        icon_lavadora = (ImageView) findViewById(R.id.icon_lavadora);
+
+        icon_ducha = (ImageView) findViewById(R.id.icon_ducha);
+
+        icon_baniera = (ImageView) findViewById(R.id.icon_baniera);
+
+        icon_banio = (ImageView) findViewById(R.id.icon_banio);
+
+        icon_llavein = (ImageView) findViewById(R.id.icon_llavein);
+
+        icon_calefactor = (ImageView) findViewById(R.id.icon_calefactor);
+
+        icon_secadora = (ImageView) findViewById(R.id.icon_secadora);
+
+        icon_armario_mu = (ImageView) findViewById(R.id.icon_armario_mu);
+
+        icon_cama = (ImageView) findViewById(R.id.icon_cama);
+
+        icon_escritorio = (ImageView) findViewById(R.id.icon_escritorio);
+
+
+        icon_telefono = (ImageView) findViewById(R.id.icon_telefono);
+
+        icon_camara = (ImageView) findViewById(R.id.icon_camara);
+
+        icon_reloj = (ImageView) findViewById(R.id.icon_reloj);
+
+        icon_audifonos = (ImageView) findViewById(R.id.icon_audifonos);
+
+        icon_tv = (ImageView) findViewById(R.id.icon_tv);
+
+        icon_laptop = (ImageView) findViewById(R.id.icon_laptop);
+
+        icon_impresora = (ImageView) findViewById(R.id.icon_impresora);
+
+
+        icon_escuela = (ImageView) findViewById(R.id.icon_escuela);
+
+        icon_piano = (ImageView) findViewById(R.id.icon_piano);
+
+        icon_paleta = (ImageView) findViewById(R.id.icon_paleta);
+
+        icon_compas = (ImageView) findViewById(R.id.icon_compas);
+
+        icon_guitara = (ImageView) findViewById(R.id.icon_guitara);
+
+        icon_cuaderno = (ImageView) findViewById(R.id.icon_cuaderno);
+
+        icon_calculadora = (ImageView) findViewById(R.id.icon_calculadora);
+
+
+        icon_boda = (ImageView) findViewById(R.id.icon_boda);
+
+        icon_documento = (ImageView) findViewById(R.id.icon_documento);
+
+        icon_unia = (ImageView) findViewById(R.id.icon_unia);
+
+        icon_peinado = (ImageView) findViewById(R.id.icon_peinado);
+
+
+        icon_pareja = (ImageView) findViewById(R.id.icon_pareja);
+
+        icon_montania = (ImageView) findViewById(R.id.icon_montania);
+
+        icon_acampar = (ImageView) findViewById(R.id.icon_acampar);
+
+        icon_palmera = (ImageView) findViewById(R.id.icon_palmera);
+
+
+        icon_tarjeta = (ImageView) findViewById(R.id.icon_tarjeta);
+
+        icon_dinero = (ImageView) findViewById(R.id.icon_dinero);
+
+        icon_transferencia = (ImageView) findViewById(R.id.icon_transferencia);
 
     }
 }

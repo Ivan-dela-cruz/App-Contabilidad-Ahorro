@@ -221,6 +221,7 @@ public class HomeFragment extends Fragment implements
         Intent intent = new Intent(getActivity(), HomeItemGastosActivity.class);
 
         String mes_put = mes_re;
+        int anio_put = anio_re;
 
         Gasto cate = new Gasto(
                 lista_gastos_recicler.get(position).getId(),
@@ -234,6 +235,7 @@ public class HomeFragment extends Fragment implements
         );
         intent.putExtra("Gasto", cate);
         intent.putExtra("mes", mes_put);
+        intent.putExtra("anio", anio_put);
         startActivity(intent);
     }
 

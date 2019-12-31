@@ -4,11 +4,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -30,9 +34,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.regex.Pattern;
 
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import co.desofsi.ahorro.*;
 import co.desofsi.ahorro.adaptadores.HomeGastosGridAdapter;
 import co.desofsi.ahorro.entidades.CategoriaGasto;
+
+import static co.desofsi.ahorro.entidades.App.CHANNEL_1_ID;
 
 public class Home_Gastos_Activity extends AppCompatActivity {
 
@@ -68,11 +76,21 @@ public class Home_Gastos_Activity extends AppCompatActivity {
     private int id_cate;
     private ArrayList<CategoriaGasto> arrayList;
 
+
+
+    ///NOTIFICACIONES
+    private NotificationManagerCompat notificationManagerCompat;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_home__gastos_);
+
+        notificationManagerCompat = NotificationManagerCompat.from(Home_Gastos_Activity.this);
+
 
         init();
         calendar = Calendar.getInstance();
@@ -132,6 +150,7 @@ public class Home_Gastos_Activity extends AppCompatActivity {
 
                             gridView.clearAnimation();
                             llenarCategoriaGastos();
+
                         } else {
                             MainActivity.sqLiteHelper.insertDataGastos(
                                     text_descrip.getText().toString().trim(),
@@ -600,6 +619,7 @@ public class Home_Gastos_Activity extends AppCompatActivity {
         //obteer datos de la base de datos
         Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '"+MainActivity.id_user+"'");
 
+        int cont =0;
         arrayList.clear();
         while (cursor.moveToNext()) {
             int id = cursor.getInt(0);
@@ -613,6 +633,9 @@ public class Home_Gastos_Activity extends AppCompatActivity {
             if(mensual.moveToFirst()){
                 total = mensual.getDouble(0);
             }
+            if (total > pre) {
+                cont++;
+            }
 
 
             arrayList.add(new CategoriaGasto(id, nombre, image, pre, estado,total));
@@ -620,6 +643,10 @@ public class Home_Gastos_Activity extends AppCompatActivity {
         }
         adapter = new HomeGastosGridAdapter(this, arrayList);
         gridView.setAdapter(adapter);
+
+        if (cont >= 1) {
+           // sendChannel1();
+        }
 
     }
 
@@ -682,6 +709,27 @@ public class Home_Gastos_Activity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
+    }
+
+    public void sendChannel1() {
+
+        Intent miIntencion = new Intent(Home_Gastos_Activity.this.getApplicationContext(),MainActivity.class);
+        PendingIntent pendiente = PendingIntent.getActivity(Home_Gastos_Activity.this.getApplicationContext(),0,miIntencion,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(Home_Gastos_Activity.this,CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.carrito)
+                .setContentTitle("Presupuesto excedido")
+                .setContentText("Ha sobrepasado el presupuesto establecido en los gastos")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setContentIntent(pendiente)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .build();
+
+
+
+        notificationManagerCompat.notify(1,notification);
+
     }
 
 
