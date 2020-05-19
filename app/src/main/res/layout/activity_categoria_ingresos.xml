@@ -3097,7 +3097,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:gravity="center"
-                            android:text="personal"
+                            android:text="Personal"
                             android:textSize="15dp"
                             android:textStyle="bold" />
 
@@ -3315,7 +3315,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
                             android:gravity="center"
-                            android:text="ingresos"
+                            android:text="Ingresos"
                             android:textSize="15dp"
                             android:textStyle="bold" />
 

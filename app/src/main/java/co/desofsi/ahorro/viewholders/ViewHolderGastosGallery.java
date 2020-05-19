@@ -29,13 +29,6 @@ public class ViewHolderGastosGallery  extends RecyclerView.ViewHolder {
         progressBarGastos = (ProgressBar) itemView.findViewById(R.id.progres_gastos);
         text_porcentaje = (TextView) itemView.findViewById(R.id.txt_porcentaje_item_gallery_gastos);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(),"CLICK",Toast.LENGTH_SHORT).show();
-
-            }
-        });
 
 
     }

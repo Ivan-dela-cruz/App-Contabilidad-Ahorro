@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -45,6 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -73,7 +77,30 @@ public class MainActivity extends AppCompatActivity {
     private CircleImageView circleImageView;
     private ImageView img_default;
 
+
+    //TEMAS APP
+    private Window window;
+    String primaryDark = "#89c29a";
+    String primary = "#B9F6CA";
+    String background = "#FFFFFF";
+
     private Usuario usuario;
+
+
+    int[][] states = new int[][]{
+            new int[]{android.R.attr.state_enabled}, // enabled
+            new int[]{-android.R.attr.state_enabled}, // disabled
+            new int[]{-android.R.attr.state_checked}, // unchecked
+            new int[]{android.R.attr.state_pressed}  // pressed
+    };
+
+    int[] colors = new int[]{
+            Color.GRAY,
+            Color.RED,
+            Color.GREEN,
+            Color.BLUE
+    };
+
 
     @SuppressLint("WrongThread")
     @Override
@@ -107,6 +134,10 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
         init();
+        window = this.getWindow();
+        ColorStateList myList = new ColorStateList(states, colors);
+        navigationView.setItemIconTintList(myList);
+        navigationView.setItemTextColor(myList);
 
         circleImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,11 +153,13 @@ public class MainActivity extends AppCompatActivity {
             btn_press = 1;
             loadGoogleProfile();
             insertCategories();
+            insertColor();
 
         } else {
             btn_press = 0;
             LoadUserProfile(AccessToken.getCurrentAccessToken());
             insertCategories();
+            insertColor();
         }
 
 
@@ -202,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (cursor.moveToFirst()) {
                             loadProfileUser();
-                           // Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
+                            // Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
                         } else {
 
                             txt_email.setText(email);
@@ -212,8 +245,9 @@ public class MainActivity extends AppCompatActivity {
 
                             sqLiteHelper.insertDataUsuarios(id, first_name, last_name, email, birthday, "Otro", byteArray);
                             insertCategories();
+                            insertColor();
 
-                           Toast.makeText(MainActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -230,7 +264,7 @@ public class MainActivity extends AppCompatActivity {
             graphRequest.executeAsync();
         } else {
             id_user = AccessToken.getCurrentAccessToken().getUserId();
-            Toast.makeText(this,"Error de conexión internet",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error de conexión internet", Toast.LENGTH_SHORT).show();
             loadProfileUser();
         }
 
@@ -265,8 +299,8 @@ public class MainActivity extends AppCompatActivity {
 
                 if (cursor.moveToFirst()) {
                     loadProfileUser();
-                   // Glide.with(MainActivity.this).load(url_image_user).into(circleImageView);
-                   // Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
+                    // Glide.with(MainActivity.this).load(url_image_user).into(circleImageView);
+                    // Toast.makeText(MainActivity.this, "Y existe", Toast.LENGTH_SHORT).show();
                 } else {
 
 
@@ -335,36 +369,53 @@ public class MainActivity extends AppCompatActivity {
         img_default = (ImageView) headerView.findViewById(R.id.img_user_face);
 
 
-
     }
 
-    public void insertCategories(){
+
+
+    public void insertCategories() {
 
         //consulta si hay catgorias agregadas sino existen agregara las categorias por defecto
-        Cursor cursor = sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '"+MainActivity.id_user+"'");
-        if (cursor.moveToFirst()){
+        Cursor cursor = sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '" + MainActivity.id_user + "'");
+        if (cursor.moveToFirst()) {
 
-        }else {
+        } else {
             CategoriaGasto cate = new CategoriaGasto();
             cate.loadCategoryGasto(MainActivity.this);
         }
 
         //consulta si hay catgorias agregadas sino existen agregara las categorias por defecto
-        Cursor cursor2 = sqLiteHelper.getDataTable("SELECT * FROM categoria_ingreso WHERE id_user = '"+MainActivity.id_user+"'");
-        if (cursor2.moveToFirst()){
+        Cursor cursor2 = sqLiteHelper.getDataTable("SELECT * FROM categoria_ingreso WHERE id_user = '" + MainActivity.id_user + "'");
+        if (cursor2.moveToFirst()) {
 
-        }else {
+        } else {
             CategoriaIngreso cate = new CategoriaIngreso();
             cate.loadCategoryIngreso(MainActivity.this);
         }
     }
 
 
+    public void insertColor() {
+        Cursor cursor = sqLiteHelper.getDataTable("SELECT * FROM colors WHERE id_user = '" + MainActivity.id_user + "'");
+        if (cursor.moveToFirst()) {
+            primaryDark = cursor.getString(2);
+            primary = cursor.getString(1);
+            background = cursor.getString(3);
+            cambiarColor(primaryDark, primary, background);
+        } else {
+            sqLiteHelper.insertDataColors(primary, primaryDark, background, 1, MainActivity.id_user);
+            cambiarColor(primaryDark, primary, background);
+        }
+    }
 
+    private void cambiarColor(String primaryDark, String primary, String background) {
 
+        window.setStatusBarColor(Color.parseColor(primaryDark));
+        this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(primary)));
+        window.setBackgroundDrawable(new ColorDrawable(Color.parseColor(background)));
+        window.setNavigationBarColor(Color.parseColor(primary));
 
-
-
+    }
 
 
 }

@@ -33,6 +33,7 @@
 
 
     <string-array name="porcentajes">
+        <item>Seleccione</item>
         <item>5 %</item>
         <item>10 %</item>
         <item>15 %</item>

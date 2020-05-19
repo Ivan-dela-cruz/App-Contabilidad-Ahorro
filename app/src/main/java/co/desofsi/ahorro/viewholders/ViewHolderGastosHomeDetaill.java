@@ -27,21 +27,6 @@ public class ViewHolderGastosHomeDetaill extends RecyclerView.ViewHolder impleme
         mylistener = listener;
 
         itemView.setOnClickListener(this);
-
-       /* itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(),"CLICK",Toast.LENGTH_SHORT).show();
-
-            }
-        });*/
-        /*btn_cate_eliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("LogItemView","BotonCliok");
-            }
-        });
-        */
     }
 
     public void setImage(byte[] image) {

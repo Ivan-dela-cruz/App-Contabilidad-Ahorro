@@ -1,43 +1,39 @@
 package co.desofsi.ahorro.entidades;
 
-import com.github.mikephil.charting.components.Description;
 
 import java.io.Serializable;
 
 public class Ahorro implements Serializable {
 
+
     private int id;
-    private double ingreso;
-    private double mensual;
-    private double saldo;
-    private int porcentaje;
-    private int meses;
-    private double anios;
-    private String fecha;
-    private String Description;
-    private int id_cat_ahorro;
+    private String descripcion;
     private byte[] imagen;
+    private double valor;
+    private String fecha;
+    private double porcentaje;
+    private double mensual;
+    private int dias;
+    private int meses;
+    private int anio;
+    private int estado;
+    private int id_cat;
+    private String id_user;
 
-    public Ahorro(int id, double ingreso, double mensual, double saldo, int porcentaje, int meses, double anios, String fecha, String description, int id_cat_ahorro, byte[] imagen) {
+    public Ahorro(int id, String descripcion, byte[] imagen, double valor, String fecha, double porcentaje, double mensual, int dias, int meses, int anio, int estado, int id_cat, String id_user) {
         this.id = id;
-        this.ingreso = ingreso;
-        this.mensual = mensual;
-        this.saldo = saldo;
-        this.porcentaje = porcentaje;
-        this.meses = meses;
-        this.anios = anios;
+        this.descripcion = descripcion;
+        this.imagen = imagen;
+        this.valor = valor;
         this.fecha = fecha;
-        Description = description;
-        this.id_cat_ahorro = id_cat_ahorro;
-        this.imagen = imagen;
-    }
-
-    public byte[] getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(byte[] imagen) {
-        this.imagen = imagen;
+        this.porcentaje = porcentaje;
+        this.mensual = mensual;
+        this.dias = dias;
+        this.meses = meses;
+        this.anio = anio;
+        this.estado = estado;
+        this.id_cat = id_cat;
+        this.id_user = id_user;
     }
 
     public int getId() {
@@ -48,52 +44,28 @@ public class Ahorro implements Serializable {
         this.id = id;
     }
 
-    public double getIngreso() {
-        return ingreso;
+    public String getDescripcion() {
+        return descripcion;
     }
 
-    public void setIngreso(double ingreso) {
-        this.ingreso = ingreso;
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
-    public double getMensual() {
-        return mensual;
+    public byte[] getImagen() {
+        return imagen;
     }
 
-    public void setMensual(double mensual) {
-        this.mensual = mensual;
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
     }
 
-    public double getSaldo() {
-        return saldo;
+    public double getValor() {
+        return valor;
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
-
-    public int getPorcentaje() {
-        return porcentaje;
-    }
-
-    public void setPorcentaje(int porcentaje) {
-        this.porcentaje = porcentaje;
-    }
-
-    public int getMeses() {
-        return meses;
-    }
-
-    public void setMeses(int meses) {
-        this.meses = meses;
-    }
-
-    public double getAnios() {
-        return anios;
-    }
-
-    public void setAnios(double anios) {
-        this.anios = anios;
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 
     public String getFecha() {
@@ -104,19 +76,67 @@ public class Ahorro implements Serializable {
         this.fecha = fecha;
     }
 
-    public String getDescription() {
-        return Description;
+    public double getPorcentaje() {
+        return porcentaje;
     }
 
-    public void setDescription(String description) {
-        Description = description;
+    public void setPorcentaje(double porcentaje) {
+        this.porcentaje = porcentaje;
     }
 
-    public int getId_cat_ahorro() {
-        return id_cat_ahorro;
+    public double getMensual() {
+        return mensual;
     }
 
-    public void setId_cat_ahorro(int id_cat_ahorro) {
-        this.id_cat_ahorro = id_cat_ahorro;
+    public void setMensual(double mensual) {
+        this.mensual = mensual;
+    }
+
+    public int getDias() {
+        return dias;
+    }
+
+    public void setDias(int dias) {
+        this.dias = dias;
+    }
+
+    public int getMeses() {
+        return meses;
+    }
+
+    public void setMeses(int meses) {
+        this.meses = meses;
+    }
+
+    public int getAnio() {
+        return anio;
+    }
+
+    public void setAnio(int anio) {
+        this.anio = anio;
+    }
+
+    public int getEstado() {
+        return estado;
+    }
+
+    public void setEstado(int estado) {
+        this.estado = estado;
+    }
+
+    public int getId_cat() {
+        return id_cat;
+    }
+
+    public void setId_cat(int id_cat) {
+        this.id_cat = id_cat;
+    }
+
+    public String getId_user() {
+        return id_user;
+    }
+
+    public void setId_user(String id_user) {
+        this.id_user = id_user;
     }
 }

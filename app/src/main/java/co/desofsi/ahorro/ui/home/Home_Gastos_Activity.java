@@ -11,10 +11,13 @@ import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -25,6 +28,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
@@ -39,12 +44,13 @@ import androidx.core.app.NotificationManagerCompat;
 import co.desofsi.ahorro.*;
 import co.desofsi.ahorro.adaptadores.HomeGastosGridAdapter;
 import co.desofsi.ahorro.entidades.CategoriaGasto;
+import co.desofsi.ahorro.ui.tools.CategoriaGastosActivity;
 
 import static co.desofsi.ahorro.entidades.App.CHANNEL_1_ID;
 
 public class Home_Gastos_Activity extends AppCompatActivity {
 
-
+    private FloatingActionButton floting;
     private GridView gridView;
     private HomeGastosGridAdapter adapter;
     private ImageView img_ingreso;
@@ -82,6 +88,11 @@ public class Home_Gastos_Activity extends AppCompatActivity {
     private NotificationManagerCompat notificationManagerCompat;
 
 
+    //TEMAS APP
+    private Window window;
+    String primaryDark = "#89c29a";
+    String primary = "#B9F6CA";
+    String background = "#FFFFFF";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +100,10 @@ public class Home_Gastos_Activity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_home__gastos_);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Gastos");
+        window = this.getWindow();
+        insertColor();
         notificationManagerCompat = NotificationManagerCompat.from(Home_Gastos_Activity.this);
 
 
@@ -96,17 +111,17 @@ public class Home_Gastos_Activity extends AppCompatActivity {
         calendar = Calendar.getInstance();
         String currentDate = DateFormat.getDateInstance().format(calendar.getInstance().getTime());
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Gastos");
 
 
         separador = new DecimalFormatSymbols();
         separador.setDecimalSeparator('.');
         decimalFormat = new DecimalFormat("#.00", separador);
 
-        llenarCategoriaGastos();
+
 
         btn_fecha.setText(getFechaHoy());
+
+        llenarCategoriaGastos();
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -126,6 +141,14 @@ public class Home_Gastos_Activity extends AppCompatActivity {
                 // Intent intent = new Intent(Ingresos_Activity.this, DetallesActivity.class);
                 ///intent.putExtra("Categorias", cate);
                 //startActivity(intent);
+            }
+        });
+
+        floting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home_Gastos_Activity.this, CategoriaGastosActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -613,11 +636,18 @@ public class Home_Gastos_Activity extends AppCompatActivity {
 
     private void llenarCategoriaGastos() {
 
+
+
        arrayList = new ArrayList<>();
 
-
+        String mes_re = "";
+        if (mes < 10) {
+            mes_re = "0" + mes;
+        } else {
+            mes_re = "" + mes;
+        }
         //obteer datos de la base de datos
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '"+MainActivity.id_user+"'");
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '" + MainActivity.id_user + "' AND estado = 1");
 
         int cont =0;
         arrayList.clear();
@@ -629,7 +659,7 @@ public class Home_Gastos_Activity extends AppCompatActivity {
             int estado = cursor.getInt(4);
 
             double total = 0;
-            Cursor mensual = MainActivity.sqLiteHelper.getDataTable("SELECT  SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  (gastos.id_cat = categoria_gasto.id) AND (categoria_gasto.estado = 1) AND categoria_gasto.id = '"+id+"'  AND categoria_gasto.id_user = '"+MainActivity.id_user+"' AND SUBSTR(gastos.fecha, 4, 2) = '12' ");
+            Cursor mensual = MainActivity.sqLiteHelper.getDataTable("SELECT  SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  (gastos.id_cat = categoria_gasto.id) AND (categoria_gasto.estado = 1) AND categoria_gasto.id = '" + id + "'  AND categoria_gasto.id_user = '" + MainActivity.id_user + "' AND SUBSTR(gastos.fecha, 4, 2) = '"+mes_re+"' AND categoria_gasto.estado = 1");
             if(mensual.moveToFirst()){
                 total = mensual.getDouble(0);
             }
@@ -676,6 +706,7 @@ public class Home_Gastos_Activity extends AppCompatActivity {
     }
 
     public void init() {
+        floting = (FloatingActionButton) findViewById(R.id.floating_gastos);
         gridView = (GridView) findViewById(R.id.grid_ingresos);
         img_ingreso = (ImageView) findViewById(R.id.img_ingreso_elejido);
         text_descrip = (EditText) findViewById(R.id.txt_describ_ingreso);
@@ -731,6 +762,23 @@ public class Home_Gastos_Activity extends AppCompatActivity {
         notificationManagerCompat.notify(1,notification);
 
     }
+    public void insertColor() {
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM colors WHERE id_user = '" + MainActivity.id_user + "'");
+        if (cursor.moveToFirst()) {
+            primaryDark = cursor.getString(2);
+            primary = cursor.getString(1);
+            background = cursor.getString(3);
+            cambiarColor(primaryDark, primary, background);
+        }
+    }
 
+    private void cambiarColor(String primaryDark, String primary, String background) {
+
+        window.setStatusBarColor(Color.parseColor(primaryDark));
+        this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(primary)));
+        window.setBackgroundDrawable(new ColorDrawable(Color.parseColor(background)));
+        window.setNavigationBarColor(Color.parseColor(primary));
+
+    }
 
 }

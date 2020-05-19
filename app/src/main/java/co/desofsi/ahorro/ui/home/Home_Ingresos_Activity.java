@@ -4,13 +4,17 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -21,6 +25,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
@@ -33,9 +39,11 @@ import java.util.regex.Pattern;
 import co.desofsi.ahorro.*;
 import co.desofsi.ahorro.adaptadores.HomeIngresosGridAdapter;
 import co.desofsi.ahorro.entidades.CategoriaIngreso;
+import co.desofsi.ahorro.ui.tools.CategoriaIngresosActivity;
 
 public class Home_Ingresos_Activity extends AppCompatActivity {
 
+    private FloatingActionButton floting;
     private GridView gridView;
     private HomeIngresosGridAdapter adapter;
     private ImageView img_ingreso;
@@ -66,7 +74,11 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
     private String nombreCategoria;
     private int id_cate;
 
-
+    //TEMAS APP
+    private Window window;
+    String primaryDark = "#89c29a";
+    String primary = "#B9F6CA";
+    String background = "#FFFFFF";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +93,8 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Ingresos");
 
-
+        window = this.getWindow();
+        insertColor();
         separador = new DecimalFormatSymbols();
         separador.setDecimalSeparator('.');
         decimalFormat = new DecimalFormat("#.00", separador);
@@ -90,7 +103,7 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
 
 
         //obteer datos de la base de datos
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_ingreso WHERE id_user = '"+MainActivity.id_user+"'");
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_ingreso WHERE id_user = '"+MainActivity.id_user+"' AND estado = 1");
 
         arrayList.clear();
         while (cursor.moveToNext()) {
@@ -127,6 +140,14 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
                 // Intent intent = new Intent(Ingresos_Activity.this, DetallesActivity.class);
                 ///intent.putExtra("Categorias", cate);
                 //startActivity(intent);
+            }
+        });
+
+        floting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home_Ingresos_Activity.this, CategoriaIngresosActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -635,6 +656,7 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
     }
 
     public void init() {
+        floting = (FloatingActionButton) findViewById(R.id.floating_ingresos);
         img_ingreso = (ImageView) findViewById(R.id.img_ingreso_elejido);
         text_descrip = (EditText) findViewById(R.id.txt_describ_ingreso);
         btn_fecha = (Button) findViewById(R.id.btn_fecha);
@@ -667,5 +689,24 @@ public class Home_Ingresos_Activity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
         return byteArray;
+    }
+
+    public void insertColor() {
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM colors WHERE id_user = '" + MainActivity.id_user + "'");
+        if (cursor.moveToFirst()) {
+            primaryDark = cursor.getString(2);
+            primary = cursor.getString(1);
+            background = cursor.getString(3);
+            cambiarColor(primaryDark, primary, background);
+        }
+    }
+
+    private void cambiarColor(String primaryDark, String primary, String background) {
+
+        window.setStatusBarColor(Color.parseColor(primaryDark));
+        this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(primary)));
+        window.setBackgroundDrawable(new ColorDrawable(Color.parseColor(background)));
+        window.setNavigationBarColor(Color.parseColor(primary));
+
     }
 }

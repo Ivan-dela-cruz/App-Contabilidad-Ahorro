@@ -212,7 +212,7 @@ public class CategoriaGasto implements Serializable {
 
 
         icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.estudio);
-        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Educacion", imageViewToByte(icon), 100, 1, MainActivity.id_user);
+        mainActivity.sqLiteHelper.insertDataCategoriaGastos("Educación", imageViewToByte(icon), 100, 1, MainActivity.id_user);
 
 
         icon = BitmapFactory.decodeResource(mainActivity.getResources(), R.drawable.manzana);

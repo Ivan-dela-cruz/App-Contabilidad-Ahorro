@@ -113,9 +113,8 @@ public class SlideshowFragment extends Fragment {
         separador.setDecimalSeparator('.');
         decimalFormat = new DecimalFormat("#.00", separador);
         init(root);
-        llenarGridView(root);
-
         btn_fecha.setText(getFechaHoy());
+        llenarGridView(root);
 
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -610,10 +609,15 @@ public class SlideshowFragment extends Fragment {
 
     public void llenarGridView(View root) {
         lista_categoria_gastos = new ArrayList<>();
-
+        String mes_re = "";
+        if (mes < 10) {
+            mes_re = "0" + mes;
+        } else {
+            mes_re = "" + mes;
+        }
 
         //obteer datos de la base de datos
-        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '" + MainActivity.id_user + "'");
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM categoria_gasto WHERE id_user = '" + MainActivity.id_user + "' AND estado = 1");
         lista_categoria_gastos.clear();
         int contador = 0;
         while (cursor.moveToNext()) {
@@ -623,11 +627,11 @@ public class SlideshowFragment extends Fragment {
             double pre = cursor.getDouble(3);
             int estado = cursor.getInt(4);
             double total = 0;
-            Cursor mensual = MainActivity.sqLiteHelper.getDataTable("SELECT  SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  (gastos.id_cat = categoria_gasto.id) AND (categoria_gasto.estado = 1) AND categoria_gasto.id = '" + id + "'  AND categoria_gasto.id_user = '" + MainActivity.id_user + "' AND SUBSTR(gastos.fecha, 4, 2) = '12' ");
+            Cursor mensual = MainActivity.sqLiteHelper.getDataTable("SELECT  SUM(gastos.valor) AS total FROM categoria_gasto LEFT JOIN gastos ON  (gastos.id_cat = categoria_gasto.id)  AND categoria_gasto.id = '" + id + "'  AND categoria_gasto.id_user = '" + MainActivity.id_user + "' AND SUBSTR(gastos.fecha, 4, 2) = '" + mes_re + "' AND categoria_gasto.estado = 1");
             if (mensual.moveToFirst()) {
                 total = mensual.getDouble(0);
             }
-            if (total > pre) {
+            if (total >= pre) {
                 contador++;
             }
             lista_categoria_gastos.add(new CategoriaGasto(id, nombre, image, pre, estado, total));
@@ -639,28 +643,10 @@ public class SlideshowFragment extends Fragment {
         gridView.setAdapter(adapter);
 
         if (contador >= 1) {
-            // Toast.makeText(getActivity(),"El presupuesto a sido sobrepaso",Toast.LENGTH_SHORT).show();
-           /*
-            NotificationCompat.Builder notifiaction_presupuesto = new NotificationCompat.Builder(getActivity().getApplicationContext());
-            notifiaction_presupuesto.setSmallIcon(R.drawable.ic_notifications_active_black_24dp);
-            notifiaction_presupuesto.setLargeIcon(((BitmapDrawable)getResources().getDrawable(R.drawable.carrito)).getBitmap());
-            notifiaction_presupuesto.setContentTitle("Presupuesto excedido");
-            notifiaction_presupuesto.setContentText("Ha sobrepado el presupuesto establecido en los gastos");
-            notifiaction_presupuesto.setTicker("FinanAhorro info");
-            notifiaction_presupuesto.setContentInfo("4");
 
-            Intent miIntencion = new Intent(getActivity().getApplicationContext(),MainActivity.class);
-            PendingIntent pendiente = PendingIntent.getActivity(getActivity().getApplicationContext(),0,miIntencion,PendingIntent.FLAG_UPDATE_CURRENT);
-            notifiaction_presupuesto.setContentIntent(pendiente);
 
-            NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-
-            notificationManager.notify(1900,notifiaction_presupuesto.build());
-
-            */
-
-           sendChannel1(root);
-          // sendChannel2(root);
+            sendChannel1(root);
+            // sendChannel2(root);
 
 
         }
@@ -671,10 +657,10 @@ public class SlideshowFragment extends Fragment {
 
     public void sendChannel1(View view) {
 
-        Intent miIntencion = new Intent(getActivity().getApplicationContext(),MainActivity.class);
-        PendingIntent pendiente = PendingIntent.getActivity(getActivity().getApplicationContext(),0,miIntencion,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent miIntencion = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+        PendingIntent pendiente = PendingIntent.getActivity(getActivity().getApplicationContext(), 0, miIntencion, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification notification = new NotificationCompat.Builder(getActivity(),CHANNEL_1_ID)
+        Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_1_ID)
                 .setSmallIcon(R.drawable.carrito)
                 .setContentTitle("Presupuesto excedido")
                 .setContentText("Ha sobrepasado el presupuesto establecido en los gastos")
@@ -685,17 +671,16 @@ public class SlideshowFragment extends Fragment {
                 .build();
 
 
-
-        notificationManagerCompat.notify(1,notification);
+        notificationManagerCompat.notify(1, notification);
 
     }
 
     public void sendChannel2(View view) {
 
-        Intent miIntencion = new Intent(getActivity().getApplicationContext(),MainActivity.class);
-        PendingIntent pendiente = PendingIntent.getActivity(getActivity().getApplicationContext(),0,miIntencion,PendingIntent.FLAG_UPDATE_CURRENT);
+        Intent miIntencion = new Intent(getActivity().getApplicationContext(), MainActivity.class);
+        PendingIntent pendiente = PendingIntent.getActivity(getActivity().getApplicationContext(), 0, miIntencion, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        Notification notification = new NotificationCompat.Builder(getActivity(),CHANNEL_2_ID)
+        Notification notification = new NotificationCompat.Builder(getActivity(), CHANNEL_2_ID)
                 .setSmallIcon(R.drawable.carrito)
                 .setContentTitle("Presupuesto excedido")
                 .setContentText("Ha sobrepasado el presupuesto establecido en los gastos")
@@ -705,7 +690,7 @@ public class SlideshowFragment extends Fragment {
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .build();
 
-        notificationManagerCompat.notify(2,notification);
+        notificationManagerCompat.notify(2, notification);
     }
 
     public String getFechaHoy() {

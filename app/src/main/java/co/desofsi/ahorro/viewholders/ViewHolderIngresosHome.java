@@ -9,37 +9,28 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import co.desofsi.ahorro.R;
+import co.desofsi.ahorro.adaptadores.RecyclerHomeListaIngresosAdapter;
 
-public class ViewHolderIngresosHome extends RecyclerView.ViewHolder  {
+public class ViewHolderIngresosHome extends RecyclerView.ViewHolder implements View.OnClickListener  {
 
     private TextView text_cate_name;
     private TextView text_saldo;
     private ImageView img_lista;
     private TextView txt_fecha;
 
+    RecyclerHomeListaIngresosAdapter.OnFiltroIngresoClick mylistener;
 
-    public ViewHolderIngresosHome(View itemView) {
+    public ViewHolderIngresosHome(View itemView, final RecyclerHomeListaIngresosAdapter.OnFiltroIngresoClick listener) {
         super(itemView);
         text_cate_name = (TextView) itemView.findViewById(R.id.txt_nombre_detail_home_ingresos);
         text_saldo = (TextView) itemView.findViewById(R.id.txt_valor_detail_home_ingresos);
         img_lista = (ImageView) itemView.findViewById(R.id.img_detail_lista_ingresos_home);
 
         txt_fecha = (TextView) itemView.findViewById(R.id.txt_fecha_detail_home_ingresos);
+        mylistener = listener;
+        itemView.setOnClickListener(this);
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(),"CLICK",Toast.LENGTH_SHORT).show();
 
-            }
-        });
-        /*btn_cate_eliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("LogItemView","BotonCliok");
-            }
-        });
-        */
     }
     public void setImage(byte[] image){
         byte[] cat_img = image;
@@ -57,5 +48,10 @@ public class ViewHolderIngresosHome extends RecyclerView.ViewHolder  {
 
     public void setFecha(String fecha){
         txt_fecha.setText(fecha);
+    }
+
+    @Override
+    public void onClick(View v) {
+        mylistener.OnFltroIngresoClick(getAdapterPosition());
     }
 }

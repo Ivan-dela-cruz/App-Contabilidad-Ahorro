@@ -9,12 +9,16 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -45,7 +49,12 @@ public class CategoriaAhorroActivity extends AppCompatActivity {
     ImageButton btn_grabar;
     ImageView img_elije;
     final int REQUEST_CODE_GALLERY = 999;
-
+    //TEMAS APP
+    private Window window;
+    String primaryDark = "#89c29a";
+    String primary = "#B9F6CA";
+    String background = "#FFFFFF";
+    private int  tipo_img = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +65,8 @@ public class CategoriaAhorroActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Nueva categoría ahorros");
+        window = this.getWindow();
+        insertColor();
         init();
 
         btn_elije.setOnClickListener(new View.OnClickListener() {
@@ -79,14 +90,30 @@ public class CategoriaAhorroActivity extends AppCompatActivity {
 
 
                     try {
-                        MainActivity.sqLiteHelper.insertDataCategoriaAhorros(
-                                txt_nom.getText().toString().trim(),
-                                imageViewToByte(img_elije), 1
+                        if(tipo_img==0){
+                            MainActivity.sqLiteHelper.insertDataCategoriaAhorros(
+                                    txt_nom.getText().toString().trim(),
+                                    imageViewToByte(img_elije),
+                                    1,
+                                    MainActivity.id_user
 
-                        );
+                            );
+
+                        }else{
+                            MainActivity.sqLiteHelper.insertDataCategoriaAhorros(
+                                    txt_nom.getText().toString().trim(),
+                                    imageViewToByteJPEG(img_elije),
+                                    1,
+                                    MainActivity.id_user
+
+                            );
+
+                        }
+
                         Toast.makeText(getApplicationContext(), "Agregado exitosamente!", Toast.LENGTH_SHORT).show();
                         txt_nom.setText("");
                         img_elije.setImageResource(R.mipmap.ic_launcher);
+                        tipo_img = 0;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -776,6 +803,13 @@ public class CategoriaAhorroActivity extends AppCompatActivity {
     }
 
 
+    private byte[] imageViewToByteJPEG(ImageView imageView) {
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
     private byte[] imageViewToByte(ImageView imageView) {
         Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -811,6 +845,8 @@ public class CategoriaAhorroActivity extends AppCompatActivity {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 img_elije.setImageBitmap(bitmap);
+                tipo_img = 1;
+
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -827,7 +863,7 @@ public class CategoriaAhorroActivity extends AppCompatActivity {
 
         txt_nom = (EditText) findViewById(R.id.txt_nombre_cat);
         btn_elije = (Button) findViewById(R.id.btn_elije);
-        btn_grabar = (ImageButton) findViewById(R.id.btn_salvar);
+        btn_grabar = (ImageButton) findViewById(R.id.btn_salvar_ahorro);
         img_elije = (ImageView) findViewById(R.id.img_categoria);
 
 
@@ -1003,6 +1039,23 @@ public class CategoriaAhorroActivity extends AppCompatActivity {
 
 
     }
+    public void insertColor() {
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM colors WHERE id_user = '" + MainActivity.id_user + "'");
+        if (cursor.moveToFirst()) {
+            primaryDark = cursor.getString(2);
+            primary = cursor.getString(1);
+            background = cursor.getString(3);
+            cambiarColor(primaryDark, primary, background);
+        }
+    }
 
+    private void cambiarColor(String primaryDark, String primary, String background) {
+
+        window.setStatusBarColor(Color.parseColor(primaryDark));
+        this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(primary)));
+        window.setBackgroundDrawable(new ColorDrawable(Color.parseColor(background)));
+        window.setNavigationBarColor(Color.parseColor(primary));
+
+    }
 
 }

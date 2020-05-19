@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/img_item_lista_ingreso_ingresos"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
         android:layout_alignParentStart="true"
         android:layout_marginStart="10dp"
         android:gravity="center_horizontal"
@@ -20,32 +20,22 @@
     <TextView
         android:id="@+id/txt_nombre_item_lista_cat_ingresos"
         android:layout_width="251dp"
-        android:layout_height="30dp"
+        android:layout_height="27dp"
+        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginStart="0dp"
-        android:layout_toStartOf="@+id/btn_delete_item_lista_cat"
+        android:layout_marginEnd="10dp"
         android:layout_toEndOf="@+id/img_item_lista_ingreso_ingresos"
         android:gravity="start|center"
         android:paddingLeft="20dp"
         android:text="Nombre"
-        android:textSize="14dp" />
-
-    <Button
-        android:id="@+id/btn_delete_item_lista_cat_ingresos"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:background="@color/md_deep_orange_200"
-        android:text="Accion"
-        android:textColor="@color/colorBlanco" />
-
+        android:textSize="12dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/txt_nombre_item_lista_cat_ingresos"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/colorBlancoTrasparente" />
 
 

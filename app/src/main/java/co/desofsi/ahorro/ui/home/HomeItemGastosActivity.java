@@ -3,10 +3,13 @@ package co.desofsi.ahorro.ui.home;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Window;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -22,7 +25,7 @@ import co.desofsi.ahorro.*;
 import co.desofsi.ahorro.adaptadores.RecyclerHomeDetailGastoAdapter;
 import co.desofsi.ahorro.entidades.Gasto;
 
-public class HomeItemGastosActivity extends AppCompatActivity {
+public class HomeItemGastosActivity extends AppCompatActivity implements RecyclerHomeDetailGastoAdapter.OnFiltroHomeClickListener {
 
 
     private ArrayList<Gasto> arrayList;
@@ -34,13 +37,19 @@ public class HomeItemGastosActivity extends AppCompatActivity {
     private String mes;
     private int anio;
 
-
+    //TEMAS APP
+    private Window window;
+    String primaryDark = "#89c29a";
+    String primary = "#B9F6CA";
+    String background = "#FFFFFF";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_item_gastos);
 
         ActionBar actionBar = getSupportActionBar();
+        window = this.getWindow();
+        insertColor();
 
         cate = (Gasto) getIntent().getExtras().getSerializable("Gasto");
         mes = (String) getIntent().getExtras().getSerializable("mes");
@@ -78,7 +87,7 @@ public class HomeItemGastosActivity extends AppCompatActivity {
 
         }
 
-        RecyclerHomeDetailGastoAdapter adapterTools = new RecyclerHomeDetailGastoAdapter(arrayList);
+        RecyclerHomeDetailGastoAdapter adapterTools = new RecyclerHomeDetailGastoAdapter(arrayList,this);
 
         recyclerView.setAdapter(adapterTools);
     }
@@ -120,5 +129,40 @@ public class HomeItemGastosActivity extends AppCompatActivity {
         chart.invalidate(); // refre
     }
 
+    public void insertColor() {
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM colors WHERE id_user = '" + MainActivity.id_user + "'");
+        if (cursor.moveToFirst()) {
+            primaryDark = cursor.getString(2);
+            primary = cursor.getString(1);
+            background = cursor.getString(3);
+            cambiarColor(primaryDark, primary, background);
+        }
+    }
 
+    private void cambiarColor(String primaryDark, String primary, String background) {
+
+        window.setStatusBarColor(Color.parseColor(primaryDark));
+        this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(primary)));
+        window.setBackgroundDrawable(new ColorDrawable(Color.parseColor(background)));
+        window.setNavigationBarColor(Color.parseColor(primary));
+
+    }
+
+    @Override
+    public void onFilroHomeClick(int position) {
+        Intent intent = new Intent(HomeItemGastosActivity.this, EditHomeGastosActivity.class);
+
+        Gasto cate = new Gasto(
+                arrayList.get(position).getId(),
+                arrayList.get(position).getDescripcion(),
+                arrayList.get(position).getFecha(),
+                arrayList.get(position).getImagen(),
+                arrayList.get(position).getValor(),
+                arrayList.get(position).getId_cat(),
+                MainActivity.id_user
+
+        );
+        intent.putExtra("Gasto", cate);
+        startActivity(intent);
+    }
 }

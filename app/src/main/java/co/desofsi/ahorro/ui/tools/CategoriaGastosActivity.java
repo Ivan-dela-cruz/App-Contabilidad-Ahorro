@@ -9,12 +9,16 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,6 +29,8 @@ import android.widget.Toast;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 
 import androidx.core.app.ActivityCompat;
 import co.desofsi.ahorro.*;
@@ -63,6 +69,17 @@ public class CategoriaGastosActivity extends AppCompatActivity {
     ImageView img_elije;
     final int REQUEST_CODE_GALLERY = 999;
 
+    DecimalFormat decimalFormat;
+    DecimalFormatSymbols separador;
+
+
+    //TEMAS APP
+    private Window window;
+    String primaryDark = "#89c29a";
+    String primary = "#B9F6CA";
+    String background = "#FFFFFF";
+
+    private int tipo_img = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +90,12 @@ public class CategoriaGastosActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("Nueva categoría gastos");
+        separador = new DecimalFormatSymbols();
+        separador.setDecimalSeparator('.');
+        decimalFormat = new DecimalFormat("#.00", separador);
         init();
+        window = this.getWindow();
+        insertColor();
 
         btn_elije.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,15 +118,27 @@ public class CategoriaGastosActivity extends AppCompatActivity {
 
 
                     try {
-                        double presupuesto = Double.parseDouble(txt_presupueto.getText().toString());
-                        MainActivity.sqLiteHelper.insertDataCategoriaGastos(
-                                txt_nom.getText().toString().trim(),
-                                imageViewToByte(img_elije), presupuesto, 1, MainActivity.id_user
 
-                        );
+                        double presupuesto = Double.parseDouble(txt_presupueto.getText().toString());
+                        if (tipo_img == 0) {
+                            MainActivity.sqLiteHelper.insertDataCategoriaGastos(
+                                    txt_nom.getText().toString().trim(),
+                                    imageViewToByte(img_elije), Double.parseDouble(decimalFormat.format(presupuesto)), 1, MainActivity.id_user
+
+                            );
+                        } else {
+                            MainActivity.sqLiteHelper.insertDataCategoriaGastos(
+                                    txt_nom.getText().toString().trim(),
+                                    imageViewToByteJPEG(img_elije), Double.parseDouble(decimalFormat.format(presupuesto)), 1, MainActivity.id_user
+
+                            );
+                        }
+
                         Toast.makeText(getApplicationContext(), "Agregado exitosamente!", Toast.LENGTH_SHORT).show();
                         txt_nom.setText("");
+                        txt_presupueto.setText("");
                         img_elije.setImageResource(R.mipmap.ic_launcher);
+                        tipo_img = 0;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -1155,6 +1189,13 @@ public class CategoriaGastosActivity extends AppCompatActivity {
         return byteArray;
     }
 
+    private byte[] imageViewToByteJPEG(ImageView imageView) {
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -1182,6 +1223,7 @@ public class CategoriaGastosActivity extends AppCompatActivity {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 img_elije.setImageBitmap(bitmap);
+                tipo_img = 1;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -1485,5 +1527,24 @@ public class CategoriaGastosActivity extends AppCompatActivity {
 
     }
 
+
+    public void insertColor() {
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM colors WHERE id_user = '" + MainActivity.id_user + "'");
+        if (cursor.moveToFirst()) {
+            primaryDark = cursor.getString(2);
+            primary = cursor.getString(1);
+            background = cursor.getString(3);
+            cambiarColor(primaryDark, primary, background);
+        }
+    }
+
+    private void cambiarColor(String primaryDark, String primary, String background) {
+
+        window.setStatusBarColor(Color.parseColor(primaryDark));
+        this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(primary)));
+        window.setBackgroundDrawable(new ColorDrawable(Color.parseColor(background)));
+        window.setNavigationBarColor(Color.parseColor(primary));
+
+    }
 
 }

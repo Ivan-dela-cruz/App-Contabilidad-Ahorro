@@ -14,20 +14,38 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".actividades.ProfileActivity" android:parentActivityName=".MainActivity" />
+        <activity android:name=".actividades.ui.main.EditProfileActivity"
+            android:parentActivityName=".actividades.ProfileActivity"/>
+        <activity
+            android:name=".ui.home.EditHomeIngresosActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.home.EditHomeGastosActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.tools.ToolsItemIngresoActivity"
+            android:parentActivityName=".ui.tools.ListToolsIngresosCate" />
+        <activity
+            android:name=".actividades.ProfileActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.ahorros.CategoriaAhorroActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ui.ahorros.AhorrosActivity" />
-        <activity android:name=".ui.home.DetailingresosHomeActivity" />
+        <activity
+            android:name=".ui.home.DetailingresosHomeActivity"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.home.HomeItemGastosActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".ui.tools.ToolsitemGastoActivity" />
+        <activity
+            android:name=".ui.tools.ToolsitemGastoActivity"
+            android:parentActivityName=".ui.tools.ListToolsGastosCate" />
         <activity
             android:name=".actividades.LoginActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".ui.slideshow.PresupuestosSlideShowActivity" />
+        <activity android:name=".ui.slideshow.PresupuestosSlideShowActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".ui.home.Home_Gastos_Activity"
             android:parentActivityName=".MainActivity" />

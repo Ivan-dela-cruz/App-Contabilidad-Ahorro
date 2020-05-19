@@ -9,8 +9,9 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import co.desofsi.ahorro.R;
+import co.desofsi.ahorro.adaptadores.RecyclerHomeDetailGastoAdapter;
 
-public class ViewHolderGastosHomeItem extends RecyclerView.ViewHolder  {
+public class ViewHolderGastosHomeItem extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private TextView text_cate_name;
     private TextView text_saldo;
@@ -18,12 +19,18 @@ public class ViewHolderGastosHomeItem extends RecyclerView.ViewHolder  {
     private ImageView img_lista;
 
 
-    public ViewHolderGastosHomeItem(View itemView) {
+    RecyclerHomeDetailGastoAdapter.OnFiltroHomeClickListener mylistener;
+
+
+    public ViewHolderGastosHomeItem(View itemView, final RecyclerHomeDetailGastoAdapter.OnFiltroHomeClickListener listener) {
         super(itemView);
         text_cate_name = (TextView) itemView.findViewById(R.id.txt_nombre_detail_home_gasto);
         text_saldo = (TextView) itemView.findViewById(R.id.txt_valor_detail_home_gasto);
         text_fecha = (TextView) itemView.findViewById(R.id.txt_fecha_detail_home_gasto);
         img_lista = (ImageView) itemView.findViewById(R.id.img_detail_lista_gastos_home);
+        mylistener = listener;
+
+        itemView.setOnClickListener(this);
 
 
     }
@@ -42,5 +49,10 @@ public class ViewHolderGastosHomeItem extends RecyclerView.ViewHolder  {
     }
     public void setFecha(String fecha){
         text_fecha.setText(fecha);
+    }
+
+    @Override
+    public void onClick(View v) {
+        mylistener.onFilroHomeClick(getAdapterPosition());
     }
 }

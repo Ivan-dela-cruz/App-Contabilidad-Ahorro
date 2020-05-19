@@ -1,5 +1,6 @@
 package co.desofsi.ahorro.ui.gallery;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import android.text.SpannableString;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
@@ -48,6 +51,7 @@ import co.desofsi.ahorro.adaptadores.RecyclerGalleryListaGastosAdapter;
 import co.desofsi.ahorro.adaptadores.RecyclerGalleryListaIngresosAdapter;
 import co.desofsi.ahorro.entidades.Gasto;
 import co.desofsi.ahorro.entidades.Ingresos;
+import co.desofsi.ahorro.ui.slideshow.PresupuestosSlideShowActivity;
 
 public class GalleryFragment extends Fragment implements View.OnClickListener {
 
@@ -55,7 +59,6 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
     PieChart pieChart, pieCharIngreso;
     CardView cardView2, cardView3, cardViewInresos, cardViewGasto;
 
-    private Button text_pie, text_pie_ingresos;
     private ArrayList<Gasto> lista_gastos;
     private ArrayList<Ingresos> lista_ingresos;
 
@@ -82,6 +85,11 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
 
     private double total_porcentaje, total_porcentaje_ingresos;
     private double total_porcentaje_ingresos1;
+
+
+
+    private FloatingActionButton flt_ahorros, flt_presuesto,flt_gastos,flt_ingresos_;
+    private FloatingActionsMenu menu_botones;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -124,31 +132,37 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
         llenarArrayGraficoGastos();
         llenarGastos();
 
-        text_pie.setOnClickListener(new View.OnClickListener() {
+        flt_presuesto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(getActivity(), PresupuestosSlideShowActivity.class);
+                startActivity(intent);
+                menu_botones.collapse();
+            }
+        });
+        flt_ingresos_.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Toast.makeText(getActivity(), "Hola pie!", Toast.LENGTH_SHORT).show();
                 cardView2.setVisibility(View.GONE);
                 cardView3.setVisibility(View.VISIBLE);
-                text_pie.setVisibility(View.GONE);
-                text_pie_ingresos.setVisibility(View.VISIBLE);
+
                 cardViewGasto.setVisibility(View.GONE);
                 cardViewInresos.setVisibility(View.VISIBLE);
 
                 llenarArrayGraficoIngresos();
 
                 llenarIngresos();
-
+                menu_botones.collapse();
 
             }
         });
 
-        text_pie_ingresos.setOnClickListener(new View.OnClickListener() {
+        flt_gastos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                text_pie.setVisibility(View.VISIBLE);
-                text_pie_ingresos.setVisibility(View.GONE);
+
                 cardView2.setVisibility(View.VISIBLE);
                 cardView3.setVisibility(View.GONE);
 
@@ -159,7 +173,7 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
                 ///*********************LIST VIEW GASTOS HOME ****************************
 
                 llenarArrayGraficoGastos();
-
+                menu_botones.collapse();
             }
         });
 
@@ -191,9 +205,14 @@ public class GalleryFragment extends Fragment implements View.OnClickListener {
 
     public void init(View root) {
 
+        flt_ahorros = (FloatingActionButton) root.findViewById(R.id.flt_grafico_ahorro);
+        flt_presuesto = (FloatingActionButton) root.findViewById(R.id.flt_grafico_presupuesto);
+        flt_ingresos_ = (FloatingActionButton) root.findViewById(R.id.flt_grafico_ingreso);
+        flt_gastos = (FloatingActionButton) root.findViewById(R.id.flt_grafico_gasto);
+        menu_botones = (FloatingActionsMenu) root.findViewById(R.id.grupoFlotante_gallery);
 
-        text_pie = (Button) root.findViewById(R.id.textView2);
-        text_pie_ingresos = (Button) root.findViewById(R.id.textView3_ingresos);
+
+
         pieChart = root.findViewById(R.id.grafico_pastel_gastos);
         pieCharIngreso = root.findViewById(R.id.grafico_pastel_ingresos);
         cardView2 = root.findViewById(R.id.cardView2);

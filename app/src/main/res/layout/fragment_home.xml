@@ -292,13 +292,14 @@
                             android:orientation="horizontal">
 
                             <ImageButton
+                                android:background="@color/colorBlanco"
                                 android:id="@+id/btn_ingresos"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:adjustViewBounds="true"
                                 android:padding="2dp"
                                 android:scaleType="fitCenter"
-                                app:srcCompat="@drawable/ingreso" />
+                                app:srcCompat="@drawable/salario" />
 
 
                             <TextView
@@ -318,7 +319,7 @@
                             android:layout_height="match_parent"
                             android:gravity="center"
                             android:text="$700,50"
-                            android:textSize="14dp"
+                            android:textSize="12dp"
                             android:textStyle="bold" />
 
                     </LinearLayout>
@@ -335,13 +336,14 @@
                             android:orientation="horizontal">
 
                             <ImageButton
+                                android:background="@color/colorBlanco"
                                 android:id="@+id/btn_next_gasto"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:adjustViewBounds="true"
                                 android:padding="2dp"
                                 android:scaleType="fitCenter"
-                                app:srcCompat="@mipmap/ic_carrito" />
+                                app:srcCompat="@drawable/carrito" />
 
 
                             <TextView
@@ -360,7 +362,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="$400,43"
-                            android:textSize="14dp"
+                            android:textSize="12dp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
@@ -400,7 +402,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:text="$300,44"
-                            android:textSize="14dp"
+                            android:textSize="12dp"
                             android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>

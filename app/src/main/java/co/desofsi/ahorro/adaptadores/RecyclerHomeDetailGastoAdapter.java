@@ -17,8 +17,24 @@ import co.desofsi.ahorro.viewholders.ViewHolderIngresosHome;
 public class RecyclerHomeDetailGastoAdapter extends RecyclerView.Adapter<ViewHolderGastosHomeItem> {
     private ArrayList<Gasto> listDatos;
 
-    public RecyclerHomeDetailGastoAdapter(ArrayList<Gasto> listDatos) {
+
+    private OnFiltroHomeClickListener myListener;
+
+    public interface OnFiltroHomeClickListener {
+        void onFilroHomeClick(int position);
+    }
+
+    public void setOnFiltroClickListener(OnFiltroHomeClickListener listener) {
+        myListener = listener;
+
+    }
+
+
+
+
+    public RecyclerHomeDetailGastoAdapter(ArrayList<Gasto> listDatos,OnFiltroHomeClickListener listener) {
         this.listDatos = listDatos;
+        this.myListener = listener;
     }
 
     @NonNull
@@ -26,7 +42,7 @@ public class RecyclerHomeDetailGastoAdapter extends RecyclerView.Adapter<ViewHol
     public ViewHolderGastosHomeItem onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.detail_home_recycler_gastos, parent, false);
-        return new ViewHolderGastosHomeItem(view);
+        return new ViewHolderGastosHomeItem(view,myListener);
 
     }
 

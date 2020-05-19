@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -63,6 +65,9 @@ public class HomeFragment extends Fragment implements
     private TextView anio_texto, mes_selection;
     private LinearLayout box_calendar;
 
+    DecimalFormat decimalFormat;
+    DecimalFormatSymbols separador;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -71,7 +76,9 @@ public class HomeFragment extends Fragment implements
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         init(root);
-
+        separador = new DecimalFormatSymbols();
+        separador.setDecimalSeparator('.');
+        decimalFormat = new DecimalFormat("#.00", separador);
 
         ////****************************VINCULACION ELEMENTOS XML *********************************
 
@@ -180,9 +187,9 @@ public class HomeFragment extends Fragment implements
 
     private void calcular() {
         total_saldo = total_ingreso - total_gastos;
-        txt_total_ingreos.setText("$ " + total_ingreso);
-        txt_totalgastos.setText("$ " + total_gastos);
-        txt_total_saldos.setText("$ " + total_saldo);
+        txt_total_ingreos.setText( decimalFormat.format(total_ingreso));
+        txt_totalgastos.setText(decimalFormat.format(total_gastos));
+        txt_total_saldos.setText( decimalFormat.format(total_saldo));
     }
 
 
@@ -243,8 +250,10 @@ public class HomeFragment extends Fragment implements
     @Override
     public void onItemHomeIngresosClick(int position) {
         Intent intent = new Intent(getActivity(), DetailingresosHomeActivity.class);
-
         String mes_put = mes_re;
+        int anio_put = anio_re;
+
+
         Ingresos cate = new Ingresos(
                 lista_ingresos.get(position).getId(),
                 lista_ingresos.get(position).getDescripcion(),
@@ -255,8 +264,10 @@ public class HomeFragment extends Fragment implements
                 MainActivity.id_user
 
         );
+
         intent.putExtra("Ingreso", cate);
         intent.putExtra("mes", mes_put);
+        intent.putExtra("anio", anio_put);
         startActivity(intent);
     }
 

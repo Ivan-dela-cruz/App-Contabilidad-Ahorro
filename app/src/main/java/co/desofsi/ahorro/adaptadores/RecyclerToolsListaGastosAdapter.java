@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ public class RecyclerToolsListaGastosAdapter extends RecyclerView.Adapter<ViewHo
     private ArrayList<CategoriaGasto> listDatos;
     private OnItemClickListener myListener;
 
+
     public interface OnItemClickListener{
         void onItemClick(int position);
     }
@@ -28,6 +30,7 @@ public class RecyclerToolsListaGastosAdapter extends RecyclerView.Adapter<ViewHo
     public RecyclerToolsListaGastosAdapter(ArrayList<CategoriaGasto> listDatos, OnItemClickListener listener) {
         this.listDatos = listDatos;
         this.myListener = listener;
+
     }
 
     @NonNull
@@ -41,8 +44,16 @@ public class RecyclerToolsListaGastosAdapter extends RecyclerView.Adapter<ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolderGastosTools holder, int position) {
-        holder.setNameCate(listDatos.get(position).getNombre());
+
+
+      if(listDatos.get(position).getEstado()==1){
+          holder.setNameCate(listDatos.get(position).getNombre()+" (visible)");
+      }else {
+          holder.setNameCate(listDatos.get(position).getNombre()+" (oculto)");
+      }
+
         holder.setImage(listDatos.get(position).getImage());
+        holder.setPresupuesto("pre: "+listDatos.get(position).getPresupuesto());
     }
 
     @Override

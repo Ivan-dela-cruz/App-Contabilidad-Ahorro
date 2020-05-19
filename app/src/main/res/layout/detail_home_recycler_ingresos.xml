@@ -24,7 +24,7 @@
         android:layout_marginTop="4dp"
         android:id="@+id/txt_nombre_detail_home_ingresos"
         android:layout_width="222dp"
-        android:layout_height="30dp"
+        android:layout_height="27dp"
         android:layout_marginStart="2dp"
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/txt_valor_detail_home_ingresos"
@@ -32,32 +32,34 @@
         android:gravity="start|center"
         android:paddingLeft="10dp"
         android:text="Nombre"
-        android:textSize="14dp" />
+        android:textSize="12dp" />
 
     <TextView
+        android:textSize="12dp"
         android:layout_marginTop="4dp"
         android:gravity="center"
         android:id="@+id/txt_valor_detail_home_ingresos"
         android:layout_width="100dp"
-        android:layout_height="30dp"
+        android:layout_height="27dp"
         android:layout_marginEnd="5dp"
         android:layout_toStartOf="@+id/txt_fecha_detail_home_ingresos"
         android:text="Accion" />
 
     <TextView
+        android:textSize="12dp"
         android:layout_marginTop="4dp"
         android:gravity="center"
         android:id="@+id/txt_fecha_detail_home_ingresos"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
+        android:layout_width="80dp"
+        android:layout_height="27dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="0dp"
         android:text="fecha" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/txt_nombre_detail_home_ingresos"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="5dp"
         android:background="@color/colorBlancoTrasparente" />
 </RelativeLayout>

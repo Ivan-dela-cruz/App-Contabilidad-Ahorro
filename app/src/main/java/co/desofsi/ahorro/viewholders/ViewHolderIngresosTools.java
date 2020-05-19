@@ -10,32 +10,24 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 import co.desofsi.ahorro.R;
+import co.desofsi.ahorro.adaptadores.RecyclerToolsListaIngresosAdapter;
 
-public class ViewHolderIngresosTools extends RecyclerView.ViewHolder {
+public class ViewHolderIngresosTools extends RecyclerView.ViewHolder implements View.OnClickListener{
 
     private TextView text_cate_name;
-    private Button btn_cate_eliminar;
     private ImageView img_lista;
 
-    public ViewHolderIngresosTools(View itemView)   {
+    RecyclerToolsListaIngresosAdapter.OnItemClickListenerIngreso mylistener;
+
+    public ViewHolderIngresosTools(View itemView, final RecyclerToolsListaIngresosAdapter.OnItemClickListenerIngreso listener)   {
         super(itemView);
         text_cate_name = (TextView) itemView.findViewById(R.id.txt_nombre_item_lista_cat_ingresos);
-        btn_cate_eliminar = (Button) itemView.findViewById(R.id.btn_delete_item_lista_cat_ingresos);
+
         img_lista = (ImageView) itemView.findViewById(R.id.img_item_lista_ingreso_ingresos);
+        mylistener=listener;
 
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(v.getContext(),"CLICK",Toast.LENGTH_SHORT).show();
+        itemView.setOnClickListener(this);
 
-            }
-        });
-        /*btn_cate_eliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("LogItemView","BotonCliok");
-            }
-        });*/
     }
     public void setImage(byte[] image){
         byte[] cat_img = image;
@@ -46,5 +38,10 @@ public class ViewHolderIngresosTools extends RecyclerView.ViewHolder {
 
     public void setNameCate(String name){
         text_cate_name.setText(name);
+    }
+
+    @Override
+    public void onClick(View v) {
+        mylistener.onItemClick(getAdapterPosition());
     }
 }

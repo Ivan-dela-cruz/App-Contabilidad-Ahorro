@@ -36,13 +36,7 @@ public class ViewHolderIngresosGallery extends RecyclerView.ViewHolder {
 
             }
         });
-        /*btn_cate_eliminar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("LogItemView","BotonCliok");
-            }
-        });
-        */
+
     }
     public void setImage(byte[] image){
         byte[] cat_img = image;

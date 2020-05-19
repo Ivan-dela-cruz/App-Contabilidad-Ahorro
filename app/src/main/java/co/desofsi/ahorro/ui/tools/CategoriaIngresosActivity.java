@@ -9,12 +9,16 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +45,6 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
     private ImageView camahospital, dentista, doctor, emfermera, frascopastilla, gotero, hospital, jeringa, lecion, maletin, pildora, tratamiento;
 
 
-
     ///familia
     private ImageView icon_bebe_fa, icon_biberon_fa, icon_sonajero_fa, icon_coche_fa, icon_osito_fa, icon_pato_fa, icon_gato_fa;
     //muebles
@@ -58,14 +61,19 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
     private ImageView icon_tarjeta, icon_dinero, icon_transferencia;
 
 
-
-
     EditText txt_nom;
     Button btn_elije;
     ImageButton btn_grabar;
     ImageView img_elije;
     final int REQUEST_CODE_GALLERY = 999;
 
+    //TEMAS APP
+    private Window window;
+    String primaryDark = "#89c29a";
+    String primary = "#B9F6CA";
+    String background = "#FFFFFF";
+
+    private int tipo_img = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +83,17 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
 
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Nueva categoría ahorros");
+        actionBar.setTitle("Nueva categoría ingresos");
         init();
-
+        window = this.getWindow();
+        insertColor();
         btn_elije.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ActivityCompat.requestPermissions(CategoriaIngresosActivity.this,
                         new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         REQUEST_CODE_GALLERY);
+
 
             }
         });
@@ -99,14 +109,24 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
 
 
                     try {
-                        MainActivity.sqLiteHelper.insertDataCategoriaIngresos(
-                                txt_nom.getText().toString().trim(),
-                                imageViewToByte(img_elije), 1,MainActivity.id_user
+                        if (tipo_img == 0) {
+                            MainActivity.sqLiteHelper.insertDataCategoriaIngresos(
+                                    txt_nom.getText().toString().trim(),
+                                    imageViewToByte(img_elije), 1, MainActivity.id_user
 
-                        );
+                            );
+                        } else {
+                            MainActivity.sqLiteHelper.insertDataCategoriaIngresos(
+                                    txt_nom.getText().toString().trim(),
+                                    imageViewToByteJPEG(img_elije), 1, MainActivity.id_user
+
+                            );
+                        }
+
                         Toast.makeText(getApplicationContext(), "Agregado exitosamente!", Toast.LENGTH_SHORT).show();
                         txt_nom.setText("");
                         img_elije.setImageResource(R.mipmap.ic_launcher);
+                        tipo_img = 0;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -793,8 +813,6 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
         });
 
 
-
-
         ///ultimAS ADICIONES *************************************
         icon_bebe_fa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1160,6 +1178,13 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
         return byteArray;
     }
 
+    private byte[] imageViewToByteJPEG(ImageView imageView) {
+        Bitmap bitmap = ((BitmapDrawable) imageView.getDrawable()).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+        return byteArray;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -1187,6 +1212,7 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
                 InputStream inputStream = getContentResolver().openInputStream(uri);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 img_elije.setImageBitmap(bitmap);
+                tipo_img = 1;
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
@@ -1378,8 +1404,6 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
         */
 
 
-
-
         icon_bebe_fa = (ImageView) findViewById(R.id.icon_bebe_fa);
 
         icon_biberon_fa = (ImageView) findViewById(R.id.icon_biberon_fa);
@@ -1485,6 +1509,25 @@ public class CategoriaIngresosActivity extends AppCompatActivity {
         icon_dinero = (ImageView) findViewById(R.id.icon_dinero);
 
         icon_transferencia = (ImageView) findViewById(R.id.icon_transferencia);
+
+    }
+
+    public void insertColor() {
+        Cursor cursor = MainActivity.sqLiteHelper.getDataTable("SELECT * FROM colors WHERE id_user = '" + MainActivity.id_user + "'");
+        if (cursor.moveToFirst()) {
+            primaryDark = cursor.getString(2);
+            primary = cursor.getString(1);
+            background = cursor.getString(3);
+            cambiarColor(primaryDark, primary, background);
+        }
+    }
+
+    private void cambiarColor(String primaryDark, String primary, String background) {
+
+        window.setStatusBarColor(Color.parseColor(primaryDark));
+        this.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor(primary)));
+        window.setBackgroundDrawable(new ColorDrawable(Color.parseColor(background)));
+        window.setNavigationBarColor(Color.parseColor(primary));
 
     }
 }

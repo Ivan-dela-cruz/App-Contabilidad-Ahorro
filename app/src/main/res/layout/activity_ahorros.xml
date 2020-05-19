@@ -29,9 +29,9 @@
                 android:id="@+id/grid_ahorros"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:columnWidth="70dp"
+                android:columnWidth="100dp"
                 android:gravity="center"
-                android:numColumns="auto_fit" />
+                android:numColumns="4" />
         </ScrollView>
 
         <LinearLayout
@@ -43,7 +43,12 @@
             android:gravity="bottom"
             android:orientation="vertical"
             android:visibility="visible">
-
+            <TextView
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/md_grey_500_25" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -55,8 +60,8 @@
                     android:orientation="vertical">
 
                     <LinearLayout
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
                         android:id="@+id/layout_cat_ingresos"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -69,15 +74,15 @@
                             android:id="@+id/btn_guardar_ahorro"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginLeft="2dp"
                             android:adjustViewBounds="true"
                             android:background="#fff"
                             android:padding="6dp"
                             android:scaleType="fitCenter"
-                            android:src="@drawable/listo" />
+                            android:src="@drawable/carrito" />
 
                         <TextView
-                            android:gravity="center"
+                            android:gravity="center|start"
                             android:id="@+id/txt_describ_ahorro"
                             android:layout_width="180dp"
                             android:layout_height="40dp"
@@ -91,9 +96,49 @@
                             android:layout_centerVertical="false"
                             android:background="@null"
                             android:maxLength="8"
-                            android:hint="00.00"
+                            android:hint="Ingrese el monto"
                             android:inputType="numberDecimal"
                             android:textSize="14dp" />
+
+
+                    </LinearLayout>
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/md_grey_500_25" />
+                    <LinearLayout
+                        android:layout_marginRight="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="2dp"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="35dp"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center|start"
+                            android:text="Ingresos"
+                            android:textSize="14dp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/txt_ingreso_calculado"
+                            android:layout_width="match_parent"
+                            android:layout_marginRight="10dp"
+                            android:gravity="center|start"
+                            android:layout_height="35dp"
+                            android:background="@null"
+                            android:maxLength="8"
+                            android:hint="Ingrese un ingreso fijo"
+                            android:inputType="numberDecimal"
+                            android:textSize="12dp" />
+
 
                     </LinearLayout>
                     <TextView
@@ -123,47 +168,11 @@
                             android:textStyle="bold" />
 
                         <Spinner
+
                             android:id="@+id/spin_porcentajes"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginRight="10dp" />
-
-
-                    </LinearLayout>
-                    <TextView
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/md_grey_500_25" />
-                    <LinearLayout
-                        android:layout_marginRight="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="2dp"
-                        android:clickable="true"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="120dp"
-                            android:layout_height="35dp"
-                            android:layout_marginLeft="10dp"
-                            android:gravity="center|start"
-                            android:text="Ingresos"
-                            android:textSize="14dp"
-                            android:textStyle="bold" />
-
-                        <TextView
-                            android:id="@+id/txt_ingreso_calculado"
-                            android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:layout_marginRight="10dp"
-                            android:gravity="center"
-                            android:text="$5000.00"
-                            android:textAlignment="center"
-                            android:textSize="12dp" />
 
 
                     </LinearLayout>
@@ -198,9 +207,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginRight="10dp"
-                            android:gravity="center"
-                            android:text="$5000.00"
-                            android:textAlignment="center"
+                            android:gravity="center|start"
+                            android:text=""
                             android:textSize="12dp" />
 
 
@@ -237,9 +245,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginRight="10dp"
-                            android:gravity="center"
-                            android:text="$5000.00"
-                            android:textAlignment="center"
+                            android:gravity="center|start"
+                            android:text=""
                             android:textSize="12dp" />
                     </LinearLayout>
 
@@ -274,9 +281,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginRight="10dp"
-                            android:gravity="center"
-                            android:text="$5000.00"
-                            android:textAlignment="center"
+                            android:gravity="center|start"
                             android:textSize="12dp" />
                     </LinearLayout>
                     <TextView
@@ -310,7 +315,6 @@
                             android:layout_height="35dp"
                             android:layout_marginRight="10dp"
                             android:gravity="center"
-                            android:text="$5000.00"
                             android:textAlignment="center"
                             android:textSize="12dp" />
                     </LinearLayout>
@@ -322,6 +326,18 @@
 
 
     </RelativeLayout>
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/flt_guardar_ahorro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginEnd="20dp"
+        app:srcCompat="@drawable/ic_check_black_24dp" />
 
 </RelativeLayout>
